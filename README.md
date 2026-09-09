@@ -4,13 +4,16 @@ Prospecto abierto el 8-sep-2026 y confirmado en la junta del 9-sep-2026. La empr
 **THINGS** (`_thingsstudio`), de Marcela Telles González: diseñan y producen piezas
 extraordinarias para bares, cafés y restaurantes (mazapán gigante en 3D, hieleras con
 aditamento, veladoras serigrafiadas, sueros «vida oral», botas españolas, papelería, costales).
-Tienen talleres propios (la ficha real dice «TALLER: 3D»). León, Gto. · WhatsApp 477 632 9263.
+Producen en un **solo taller** (varias personas, impresión 3D en Bambu Lab) que lleva la
+**encargada de diseño**; la ficha real dice «TALLER: 3D». Qué procesos además del 3D se hacen
+adentro y cuáles afuera: por confirmar. León, Gto. · WhatsApp 477 632 9263.
 
 **Lo que pidió Marce:** un programa para el taller donde ella levante pedidos con imagen,
 cantidad y descripción, y el taller sepa la fecha de entrega o de envío sin preguntar.
 
-**Pendiente de THINGS:** el Excel con productos, clientes y pedidos; quién es quién en el
-taller; regla de numeración y cobro (anticipo); fotos de los productos que más repiten.
+**Pendiente de THINGS:** el Excel con productos, clientes y pedidos; nombres del equipo y
+cuántas impresoras Bambu Lab; qué procesos se hacen adentro y cuáles afuera; regla de
+numeración y cobro (anticipo); fotos de los productos que más repiten.
 
 ## Qué hay aquí
 
@@ -19,15 +22,22 @@ taller; regla de numeración y cobro (anticipo); fotos de los productos que más
   semicondensada e Inter Tight, las mismas familias de sus documentos). Lleva `noindex`.
   - **Tablero del taller** (funciona): cada pieza como tarjeta con foto, cuántas, para quién,
     y la fecha límite (entrega, o salida del envío si es fuera de ciudad). Contadores de
-    atrasadas, esta semana, en producción y listas. Filtros por taller. El taller marca
+    atrasadas, esta semana, en producción y listas. Filtros por proceso (3D · Bambu Lab,
+    serigrafía, DTF UV, impresión, papelería, textil, ensamble) y por persona del equipo
+    (nombres de prueba: Encargada de diseño, Ana, Sofi, Dani, Lu). El taller marca
     iniciar → listo → entregado.
+  - **Cola de impresión 3D** (funciona): las piezas 3D pendientes en orden de fecha límite,
+    con horas por pieza × cantidad, acumulado, fecha estimada con N impresoras (ajustable, 20 h
+    útiles por día) y si alcanza o no.
   - **Pedidos** (funciona): lista con avance por pedido, total con IVA, búsqueda. «Levantar
     pedido»: cliente, entrega, envío fuera de ciudad y piezas con foto (desde el celular abre la
-    cámara; se guarda reducida a 900 px), concepto, descripción, cantidad, precio, taller,
-    material, medidas, especificaciones y casillas color/luz/bengala/logos. Se pueden agregar
+    cámara; se guarda reducida a 900 px), concepto, descripción, cantidad, precio, proceso,
+    asignar a alguien del equipo, horas de impresión si es 3D, material, medidas,
+    especificaciones y casillas color/luz/bengala/logos. Se pueden agregar
     piezas a un pedido existente.
   - **Ficha técnica** (funciona): réplica del formato de THINGS (`180825 MAZAPAN.pdf`),
-    generada desde la pieza. Botón de imprimir / guardar PDF.
+    generada desde la pieza; «productor responsable» es quien tiene asignada la pieza, o la
+    encargada de diseño. Botón de imprimir / guardar PDF.
   - **Cotización** (funciona): réplica del formato 2026 (tabla, subtotal, IVA 16 %, total),
     generada desde el pedido.
   - **Propuesta**: lo que entendimos en la junta, lo que ya hace, lo que necesitamos, cómo
@@ -39,7 +49,7 @@ taller; regla de numeración y cobro (anticipo); fotos de los productos que más
   2026. Lo que se captura se guarda solo en el navegador; «Reiniciar» lo borra.
 - La versión 1 (demo genérica «Pedidos y Maquila» para una intermediaria con maquilas
   externas) quedó en el historial de git (commit `7e0a2a3`). Su premisa era parcialmente
-  incorrecta: THINGS produce en talleres propios.
+  incorrecta: THINGS produce en su propio taller.
 
 ## Cómo enseñarla
 
@@ -65,12 +75,12 @@ Pegar dentro de `"clientes"` cuando nadie más esté editando ese repo:
   "nombre": "THINGS (_thingsstudio) — Marcela Telles",
   "lugar": "León, Gto.",
   "relacion": "Prospecto desde 8-sep-2026, recomendado por IMSA. Junta 9-sep-2026: muy interesada en un sistema para el taller.",
-  "que_vende": "Diseño y producción de piezas promocionales y de ambientación para bares, cafés y restaurantes (3D, serigrafía, DTF UV, impresión, papelería, textil), con talleres propios.",
+  "que_vende": "Diseño y producción de piezas promocionales y de ambientación para bares, cafés y restaurantes (3D, serigrafía, DTF UV, impresión, papelería, textil), con un taller propio (3D en Bambu Lab) que lleva la encargada de diseño.",
   "canales": [],
   "cobro": {"modelo": "sin definir; se cotiza por módulo cuando llegue el Excel", "recurrente": false, "nota": "Regla: no pagar infraestructura por alguien que aún no paga. Hoy es un HTML sin servidor."},
   "quiere": "Levantar pedidos con imagen, cantidad y descripción; que el taller vea fecha de entrega y de envío; ficha técnica y cotización con su formato.",
-  "riesgo": "Falta ver el Excel: si su operación real es más simple o más caótica de lo que suponemos, el módulo cambia. Talleres y personas por confirmar.",
-  "desbloquea": "El Excel de productos, clientes y pedidos, y una lista de talleres con su responsable.",
+  "riesgo": "Falta ver el Excel: si su operación real es más simple o más caótica de lo que suponemos, el módulo cambia. Equipo, impresoras y procesos externos por confirmar.",
+  "desbloquea": "El Excel de productos, clientes y pedidos, los nombres del equipo, cuántas impresoras Bambu Lab hay y qué procesos se hacen adentro.",
   "proyectos": ["things-taller"]
 }
 ```
