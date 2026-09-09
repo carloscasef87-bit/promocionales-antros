@@ -125,6 +125,35 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .tag{display:inline-flex;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:5px;background:var(--negro);color:#fff}
 .tag.neon{background:var(--neon);color:var(--negro)}
 
+/* impresoras */
+.impresoras{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.imp{border:1.5px solid var(--negro);border-radius:12px;background:var(--papel);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+.imp.mal{border-color:var(--rojo);box-shadow:0 0 0 3px rgba(255,2,2,.18)}
+.imp .imp-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-bottom:1.5px solid var(--negro);background:var(--gris)}
+.imp .imp-h b{font-family:var(--disp);font-stretch:87.5%;font-weight:800;text-transform:uppercase;font-size:17px}
+.imp .imp-h small{display:block;font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.imp.mant .imp-h{background:var(--rojo);color:#fff}
+.imp.mant .imp-h small{color:#fff}
+.imp.libre .imp-h{background:var(--papel)}
+.imp .imp-b{padding:12px;display:grid;gap:8px;align-content:start}
+.imp .ahora{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:start}
+.imp .ahora .th{width:64px;height:48px;border:1.5px solid var(--negro);border-radius:6px;overflow:hidden;background:var(--neon-soft);display:grid;place-items:center}
+.imp .ahora .th img{width:100%;height:100%;object-fit:cover}
+.imp .ahora .th svg{width:26px;height:26px}
+.imp .ahora h3{font-size:16px}
+.imp .ahora .cli{font-size:12.5px;color:var(--ink2)}
+.imp .avance{width:100%;height:10px}
+.imp .hechas{display:flex;align-items:center;gap:8px;font-size:13px;flex-wrap:wrap}
+.imp .hechas input{width:64px;padding:4px 6px;border:1.5px solid var(--negro);border-radius:6px;font:inherit;font-weight:700;text-align:center}
+.imp .termina{font-size:12.5px}
+.imp .termina.mal{color:var(--rojo);font-weight:700}
+.imp .despues{font-size:12.5px;color:var(--ink2);border-top:1px dashed var(--linea);padding-top:8px}
+.imp .despues b{color:var(--ink)}
+.imp .imp-f{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1.5px solid var(--linea)}
+.imp .libre-msg{display:grid;justify-items:center;gap:6px;padding:14px 0;color:var(--ink2);font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.imp .libre-msg svg{width:40px;height:40px}
+.cola-sel{padding:5px 8px;border:1.5px solid var(--negro);border-radius:7px;font:inherit;font-size:13px;font-weight:700;background:var(--neon)}
+
 /* lista de pedidos */
 .fila{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;padding:12px 4px;border-top:1.5px solid var(--linea);width:100%;text-align:left}
 .fila:first-child{border-top:0}
@@ -321,18 +350,24 @@ td.r,th.r{text-align:right}
       <div class="cifras" id="cifras"></div>
       <section class="caja">
         <div class="caja-h">
-          <div><span class="mini">Impresión 3D · Bambu Lab</span><h3>Cola de impresión</h3></div>
-          <label class="campo" style="display:flex;align-items:center;gap:8px"><span>Impresoras</span><input id="impresoras" type="number" min="1" max="30" step="1" style="width:74px"></label>
+          <div><span class="mini">Impresión 3D · Bambu Lab</span><h2>Las seis impresoras</h2></div>
+          <span class="tiny muted" id="impResumen"></span>
         </div>
-        <div class="tabla-wrap" id="cola3d"></div>
+        <div class="impresoras" id="impresoras"></div>
       </section>
       <section class="caja">
         <div class="caja-h">
-          <div><span class="mini">Piezas por producir</span><h2 id="tallerTitulo">Tablero</h2></div>
+          <div><span class="mini">Sin impresora todavía</span><h3>Cola de piezas</h3></div>
+          <span class="tiny muted" id="colaResumen"></span>
+        </div>
+        <div class="tabla-wrap" id="cola"></div>
+      </section>
+      <section class="caja">
+        <div class="caja-h">
+          <div><span class="mini">Todas las piezas</span><h3 id="tallerTitulo">Pendientes</h3></div>
           <span class="tiny muted" id="tallerResumen"></span>
         </div>
-        <div class="filtros" id="filtrosTaller" style="margin-bottom:8px"></div>
-        <div class="filtros" id="filtrosPersona" style="margin-bottom:14px"></div>
+        <div class="filtros" id="filtrosTaller" style="margin-bottom:14px"></div>
         <div class="tarjetas" id="tarjetas"></div>
       </section>
     </div>
@@ -377,18 +412,18 @@ td.r,th.r{text-align:right}
   <section class="view prop" id="view-propuesta" hidden>
     <div>
       <h1 class="titulo">Lo que entendimos en la junta :)</h1>
-      <p class="intro" style="margin-top:14px">Marce levanta el pedido con imagen, cantidad y descripción; el taller lo ve al momento y sabe, sin preguntar, para cuándo es la entrega y cuándo tiene que salir el envío. Hoy THINGS tiene un solo taller: varias personas, impresión 3D en Bambu Lab, y la encargada de diseño que también lleva el taller. La ficha técnica y la cotización salen del mismo pedido, con el formato de THINGS, sin volver a capturar. Esta versión ya hace eso con datos de prueba y con la identidad de la marca.</p>
+      <p class="intro" style="margin-top:14px">Marce levanta el pedido con imagen, cantidad y descripción; el taller lo ve al momento y sabe, sin preguntar, para cuándo es la entrega y cuándo tiene que salir el envío. Hoy THINGS tiene un solo taller de impresión 3D con seis Bambu Lab. La ficha técnica y la cotización salen del mismo pedido, con el formato de THINGS, sin volver a capturar. Esta versión ya hace eso con datos de prueba y con la identidad de la marca.</p>
     </div>
 
     <div>
       <h2 style="margin-bottom:12px">Lo que ya hace esta versión</h2>
       <div class="bloques">
-        <div class="bloque neon"><span class="n">01</span><h3>Levantar pedido</h3><p>Cliente, fecha de entrega, envío fuera de ciudad y cada pieza con foto (desde el celular), cantidad, descripción, taller, material, medidas y especificaciones. Las casillas de la ficha (color, luz, bengala, logos) van en el mismo paso.</p><span class="tagf">Funciona</span></div>
-        <div class="bloque neon"><span class="n">02</span><h3>Tablero del taller</h3><p>Cada pieza como tarjeta con su foto, cuántas son, para quién y la fecha límite: entrega, o salida del envío si es fuera de ciudad. Lo atrasado se pinta de rojo. La encargada asigna cada pieza a alguien del equipo y ve la cola de impresión 3D: cuántas horas de Bambu Lab hay encoladas y si alcanzan antes de la fecha.</p><span class="tagf">Funciona</span></div>
+        <div class="bloque neon"><span class="n">01</span><h3>Levantar pedido</h3><p>Cliente, fecha de entrega, envío fuera de ciudad y cada pieza con foto (desde el celular), cantidad, descripción, horas de impresión, material, medidas y especificaciones. Las casillas de la ficha (color, luz, bengala, logos) van en el mismo paso. La pieza se manda a una impresora ahí mismo o se deja en la cola.</p><span class="tagf">Funciona</span></div>
+        <div class="bloque neon"><span class="n">02</span><h3>Las seis impresoras</h3><p>Qué está imprimiendo cada Bambu Lab: la pieza, para quién, cuántas van y cuántas faltan, cuándo termina y si alcanza la fecha de entrega o de envío. Lo que no alcanza se pinta de rojo. Abajo, la cola de lo que aún no tiene impresora, en orden de fecha límite, con un botón para mandarla a la que esté libre.</p><span class="tagf">Funciona</span></div>
         <div class="bloque neon"><span class="n">03</span><h3>Ficha técnica</h3><p>La hoja que hoy arman a mano, generada desde el pedido: número, cliente, producto, taller, fecha de entrega, material, piezas, medidas, especificaciones, imagen y casillas. Se imprime o se guarda en PDF.</p><span class="tagf">Funciona</span></div>
         <div class="bloque neon"><span class="n">04</span><h3>Cotización</h3><p>La tabla de cantidad, concepto, descripción, precio unitario y total, con subtotal, IVA y total, en el formato de THINGS 2026. Sale del mismo pedido.</p><span class="tagf">Funciona</span></div>
         <div class="bloque"><span class="n">05</span><h3>Con sus datos reales</h3><p>Cuando llegue el Excel de productos, clientes y pedidos, se carga aquí y la plataforma arranca con su historia completa, no vacía.</p><span class="tagf">Siguiente paso</span></div>
-        <div class="bloque"><span class="n">06</span><h3>Acceso por persona</h3><p>Marce entra a pedidos y cotizaciones; la encargada de diseño al tablero completo, para asignar; cada persona del taller ve sus piezas desde el celular. Cada cambio queda con quién lo hizo y a qué hora.</p><span class="tagf">Siguiente paso</span></div>
+        <div class="bloque"><span class="n">06</span><h3>Acceso por persona</h3><p>Marce entra a todo desde donde esté; el taller solo al tablero, desde la tablet o el celular del taller. Cada cambio queda con quién lo hizo y a qué hora.</p><span class="tagf">Siguiente paso</span></div>
       </div>
     </div>
 
@@ -396,7 +431,7 @@ td.r,th.r{text-align:right}
       <h2 style="margin-bottom:12px">Lo que necesitamos de THINGS</h2>
       <div class="lista">
         <div><i>1</i><div><b>El Excel de productos, clientes y pedidos.</b><p>Con eso llenamos el catálogo, los precios unitarios y el historial. Aunque esté desordenado: lo limpiamos nosotros.</p></div></div>
-        <div><i>2</i><div><b>Los nombres del equipo y cuántas impresoras Bambu Lab hay.</b><p>Y qué procesos se hacen en el taller además del 3D, y cuáles se mandan afuera: serigrafía, DTF UV, papelería, textil. Con eso la cola de impresión y las asignaciones quedan con datos reales.</p></div></div>
+        <div><i>2</i><div><b>Las seis impresoras y las horas de impresión de lo que más repiten.</b><p>Modelo de cada Bambu Lab y cuánto tarda una hielera, un mazapán o unas letras. Con eso el tablero calcula solo cuándo termina cada impresora.</p></div></div>
         <div><i>3</i><div><b>Cómo numeran los pedidos y cómo cobran.</b><p>Vimos «_180825MAZAPAN» y «_140726 CAFE DRAMA QRO- APERTURA»: fecha más nombre. Confirmar la regla, y si piden anticipo y cuánto.</p></div></div>
         <div><i>4</i><div><b>Fotos de los productos que más repiten.</b><p>Veladoras, hieleras, sueros, botas españolas, papelería. Con foto, el taller no pregunta.</p></div></div>
       </div>
@@ -458,29 +493,14 @@ const ICO={
   print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V3h12v6M6 17H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>'
 };
 
-/* ---------- procesos dentro del único taller (3D en Bambu Lab confirmado; el resto por confirmar si se hace adentro o afuera) ---------- */
-const TALLERES={
-  tresd:{nombre:'3D · Bambu Lab',largo:'Impresión 3D'},
-  seri:{nombre:'Serigrafía',largo:'Serigrafía epóxica'},
-  dtf:{nombre:'DTF UV',largo:'Impresión DTF UV'},
-  impr:{nombre:'Impresión',largo:'Impresión directa y vinil'},
-  papel:{nombre:'Papelería',largo:'Papelería y suaje'},
-  textil:{nombre:'Textil',largo:'Textil y bordado'},
-  ens:{nombre:'Ensamble',largo:'Ensamble y empaque'}
-};
-/* equipo del taller: nombres de prueba; la encargada de diseño es la encargada del taller */
-const EQUIPO=[
-  {id:'enc',nombre:'Encargada de diseño',corto:'Encargada'},
-  {id:'p1',nombre:'Ana',corto:'Ana'},
-  {id:'p2',nombre:'Sofi',corto:'Sofi'},
-  {id:'p3',nombre:'Dani',corto:'Dani'},
-  {id:'p4',nombre:'Lu',corto:'Lu'}
-];
-const persona=id=>EQUIPO.find(e=>e.id===id)||null;
+/* ---------- el taller: un solo taller de impresión 3D con seis Bambu Lab ---------- */
+const N_IMPRESORAS=6;
+const IMPRESORAS=Array.from({length:N_IMPRESORAS},(_,i)=>({n:i+1,nombre:'Impresora '+(i+1)}));
+
 const HORAS_DIA=20; /* horas útiles por impresora al día: corren de noche */
 const ESTADOS={
   por_iniciar:{txt:'Por iniciar',cls:''},
-  produccion:{txt:'En producción',cls:'produccion'},
+  produccion:{txt:'Imprimiendo',cls:'produccion'},
   listo:{txt:'Listo',cls:'listo'},
   entregado:{txt:'Entregado',cls:'entregado'}
 };
@@ -491,61 +511,55 @@ function generarBase(){
   const P=[];
   const d=n=>iso(addDays(hoy,n));
   let uid=0;
-  const pieza=(o)=>({id:'z'+(++uid),concepto:o.c,descripcion:o.d||'',cantidad:o.q,pu:o.pu==null?null:o.pu,taller:o.t,material:o.m||'',medidas:o.md||'',especificaciones:o.e||'',flags:Object.assign({color:false,luz:false,bengala:false,logos:false},o.f||{}),imagen:o.img||null,estado:o.s||'por_iniciar',productor:o.pr||'',asignada:o.a||null,horas:o.h==null?null:o.h,contexto:o.ctx||''});
+  const pieza=(o)=>({id:'z'+(++uid),concepto:o.c,descripcion:o.d||'',cantidad:o.q,pu:o.pu==null?null:o.pu,horas:o.h==null?null:o.h,impresora:o.imp||null,hechas:o.hechas||0,material:o.m||'Impresión 3D en PLA',medidas:o.md||'',especificaciones:o.e||'',flags:Object.assign({color:false,luz:false,bengala:false,logos:false},o.f||{}),imagen:o.img||null,estado:o.s||'por_iniciar',productor:o.pr||'',contexto:o.ctx||''});
   const pedido=(o)=>{P.push({no:o.no,fecha:o.fecha,empresa:o.empresa,cliente:o.cliente||'',whatsapp:o.wa||'',ciudad:o.ciudad||'León',fuera:!!o.fuera,entrega:o.entrega,envio:o.envio||null,envioCosto:o.envioCosto||0,notas:o.notas||'',piezas:o.piezas});};
 
   // Ficha real que compartió THINGS (18.08.2025), ya entregada
   pedido({no:'_180825MAZAPAN',fecha:'2025-08-18',empresa:'Marea Brava',cliente:'Marea Brava Restaurant',ciudad:'León',entrega:'2025-09-02',
-    piezas:[pieza({c:'Mazapán',d:'Mazapán gigante con vertedor',q:1,pu:null,t:'tresd',m:'Impresión 3D.',md:'Ficha técnica. (entrega ya en medida)',e:'MAZAPÁN GIGANTE CON VERTEDOR, COLOR: CARNITA. LOGOTIPO EN VINIL.',f:{color:true,luz:false,bengala:true,logos:true},img:'img/mazapan.jpg',s:'entregado',h:9,a:'enc',
+    piezas:[pieza({c:'Mazapán',d:'Mazapán gigante con vertedor',q:1,pu:null,h:9,m:'Impresión 3D.',md:'Ficha técnica. (entrega ya en medida)',e:'MAZAPÁN GIGANTE CON VERTEDOR, COLOR: CARNITA. LOGOTIPO EN VINIL.',f:{color:true,luz:false,bengala:true,logos:true},img:'img/mazapan.jpg',s:'entregado',hechas:1,
       ctx:'MAZAPÁN GIGANTE CON VERTEDOR, FABRICADO CON BASE PLANA QUE PERMITE COLOCARLO SOBRE SUPERFICIES COMO MESAS O BARRAS. EN LA PARTE FRONTAL LLEVA UN VINIL PERSONALIZADO QUE SIMULA LA ETIQUETA CLÁSICA DEL MAZAPÁN. CUENTA CON UN ESPACIO PARA COLOCAR UN VERTEDOR Y CON EL LOGOTIPO DE THINGSSTUDIO EN BAJO RELIEVE. INCLUYE ENSAMBLES LATERALES QUE FACILITAN SU ARMADO.'})]});
 
-  // Apertura de un café fuera de la ciudad: pedido grande, varias piezas, varios talleres
-  pedido({no:'_'+fNo(addDays(hoy,-8))+' CAFÉ ÁMBAR QRO- APERTURA',fecha:d(-8),empresa:'Café Ámbar Querétaro',cliente:'Paty',wa:'442 000 0000',ciudad:'Querétaro',fuera:true,entrega:d(17),envio:d(15),envioCosto:16000,
+  // Apertura de un café fuera de la ciudad: pedido grande, varias piezas
+  pedido({no:'_'+fNo(addDays(hoy,-8))+' CAFÉ ÁMBAR QRO- APERTURA',fecha:d(-8),empresa:'Café Ámbar Querétaro',cliente:'Paty',wa:'442 000 0000',ciudad:'Querétaro',fuera:true,entrega:d(17),envio:d(15),envioCosto:3500,
     piezas:[
-      pieza({c:'Hieleras + aditamento PTU + base PLA',d:'Aditamento PTU y base PLA',q:50,pu:2790,t:'tresd',m:'Impresión 3D en PLA y PTU',md:'Según hielera estándar del cliente',e:'HIELERA CON ADITAMENTO PTU Y BASE PLA. LOGO EN BAJO RELIEVE.',f:{logos:true},s:'produccion',h:3.5,a:'p1'}),
-      pieza({c:'Mini veladora',d:'Sin personalización',q:300,pu:29.79,t:'ens',m:'Veladora de cera, vaso de vidrio',s:'listo',a:'p2'}),
-      pieza({c:'Veladora mediana',d:'Serigrafía epóxica',q:500,pu:55,t:'seri',m:'Vaso de vidrio, tinta epóxica a una tinta',e:'LOGO DEL CAFÉ AL FRENTE, TINTA NEGRA.',f:{logos:true,luz:true},s:'produccion',a:'p2'}),
-      pieza({c:'Macro veladora',d:'Serigrafía epóxica',q:200,pu:220,t:'seri',m:'Vaso de vidrio grande, tinta epóxica',f:{logos:true,luz:true},s:'por_iniciar'}),
-      pieza({c:'Suero vida oral',d:'Impresión directa',q:2000,pu:42,t:'impr',m:'Botella PET 250 ml, impresión directa',e:'ETIQUETA ESTILO SUERO ORAL CON EL NOMBRE DEL CAFÉ.',f:{color:true,logos:true},s:'produccion',a:'p3'}),
-      pieza({c:'Porta veladoras',d:'Incluye pilas.',q:30,pu:980,t:'ens',m:'Acrílico y LED, pilas incluidas',f:{luz:true},s:'por_iniciar'}),
-      pieza({c:'Botas españolas',d:'DTF UV, dos diseños.',q:100,pu:640,t:'dtf',m:'Vidrio, impresión DTF UV',e:'DOS DISEÑOS, 50 Y 50.',f:{color:true,logos:true},s:'por_iniciar'}),
-      pieza({c:'Papelería invitación Café Ámbar',d:'3 diseños distintos',q:500,pu:55,t:'papel',m:'Cartulina sulfatada 14 pts',md:'14 × 21 cm',s:'listo',a:'p4'}),
-      pieza({c:'Cajas invitación + EVA + suaje',d:'Con EVA nueva medida autorizada',q:60,pu:415,t:'papel',m:'Cartón rígido, EVA, suaje',md:'Nueva medida autorizada',s:'produccion',a:'p4'}),
-      pieza({c:'Costales de harina',d:'Personalizados',q:10,pu:1300,t:'textil',m:'Manta cruda, serigrafía',f:{logos:true},s:'por_iniciar'})
+      pieza({c:'Hieleras + aditamento PTU + base PLA',d:'Aditamento PTU y base PLA',q:50,pu:2790,h:3.5,imp:1,hechas:18,m:'Impresión 3D en PLA y PTU',md:'Según hielera estándar del cliente',e:'HIELERA CON ADITAMENTO PTU Y BASE PLA. LOGO EN BAJO RELIEVE.',f:{logos:true},s:'produccion'}),
+      pieza({c:'Presentador de botella con logo',d:'Base 3D para botella, logo en relieve',q:6,pu:1350,h:6,imp:2,hechas:2,m:'Impresión 3D en PLA, acabado mate',f:{logos:true,bengala:true},s:'produccion'}),
+      pieza({c:'Porta veladoras 3D',d:'Base con logo para veladora mediana',q:30,pu:180,h:1.2,m:'Impresión 3D en PLA',f:{logos:true,luz:true},s:'por_iniciar'}),
+      pieza({c:'Servilleteros con logo',d:'Servilletero de barra',q:100,pu:95,h:0.8,m:'Impresión 3D en PLA',f:{logos:true},s:'por_iniciar'}),
+      pieza({c:'Letras 3D para la barra',d:'Nombre del café, 40 cm de alto',q:2,pu:3200,h:14,m:'Impresión 3D en PLA, acabado mate',md:'40 cm de alto',f:{color:true,luz:true},s:'por_iniciar'})
     ]});
 
   pedido({no:'_'+fNo(addDays(hoy,-12))+' LA ROMA CANTINA',fecha:d(-12),empresa:'La Roma Cantina',cliente:'Pepe Montes',ciudad:'León',entrega:d(3),
     piezas:[
-      pieza({c:'Mazapán gigante con vertedor',d:'Color carnita, logotipo en vinil',q:2,pu:null,t:'tresd',m:'Impresión 3D',md:'Ficha técnica',e:'MAZAPÁN GIGANTE CON VERTEDOR. LOGO DE LA CANTINA EN VINIL.',f:{color:true,bengala:true,logos:true},img:'img/mazapan.jpg',s:'produccion',h:9,a:'p1'}),
-      pieza({c:'Suero vida oral',d:'Impresión directa',q:300,pu:42,t:'impr',m:'Botella PET 250 ml',f:{logos:true},s:'por_iniciar'})
+      pieza({c:'Mazapán gigante con vertedor',d:'Color carnita, logotipo en vinil',q:2,pu:null,h:9,imp:3,hechas:1,m:'Impresión 3D',md:'Ficha técnica',e:'MAZAPÁN GIGANTE CON VERTEDOR. LOGO DE LA CANTINA EN VINIL.',f:{color:true,bengala:true,logos:true},img:'img/mazapan.jpg',s:'produccion'}),
+      pieza({c:'Servilleteros con logo',d:'Servilletero de barra',q:40,pu:95,h:0.8,hechas:40,m:'Impresión 3D en PLA',f:{logos:true},s:'listo'})
     ]});
 
   pedido({no:'_'+fNo(addDays(hoy,-4))+' BRUMA ROOFTOP',fecha:d(-4),empresa:'Bruma Rooftop',cliente:'Fer Aranda',ciudad:'León',entrega:d(9),
     piezas:[
-      pieza({c:'Veladora mediana',d:'Serigrafía epóxica',q:200,pu:55,t:'seri',m:'Vaso de vidrio, tinta epóxica',f:{logos:true,luz:true},s:'por_iniciar'}),
-      pieza({c:'Botas españolas',d:'DTF UV, un diseño',q:40,pu:640,t:'dtf',m:'Vidrio, impresión DTF UV',f:{color:true,logos:true},s:'por_iniciar'}),
-      pieza({c:'Hielera con aditamento PTU',d:'Aditamento PTU y base PLA',q:12,pu:2790,t:'tresd',m:'Impresión 3D en PLA y PTU',f:{logos:true},s:'por_iniciar',h:3.5})
+      pieza({c:'Hieleras + aditamento PTU',d:'Aditamento PTU y base PLA',q:12,pu:2790,h:3.5,m:'Impresión 3D en PLA y PTU',f:{logos:true},s:'por_iniciar'}),
+      pieza({c:'Base para botella con luz',d:'Base 3D con LED y logo',q:4,pu:980,h:2.5,m:'Impresión 3D en PLA, LED incluido',f:{luz:true,logos:true},s:'por_iniciar'})
     ]});
 
   pedido({no:'_'+fNo(addDays(hoy,-15))+' ÓNIX CLUB',fecha:d(-15),empresa:'Ónix Club',cliente:'Rodrigo Ledesma',ciudad:'León',entrega:d(-4),
     piezas:[
-      pieza({c:'Hieleras + aditamento PTU',d:'Aditamento PTU y base PLA',q:20,pu:2790,t:'tresd',m:'Impresión 3D',f:{logos:true},s:'entregado',h:3.5,a:'p1'}),
-      pieza({c:'Suero vida oral',d:'Impresión directa',q:500,pu:42,t:'impr',m:'Botella PET 250 ml',f:{logos:true},s:'entregado',a:'p3'})
+      pieza({c:'Hieleras + aditamento PTU',d:'Aditamento PTU y base PLA',q:20,pu:2790,h:3.5,hechas:20,m:'Impresión 3D',f:{logos:true},s:'entregado'}),
+      pieza({c:'Toppers para mesa',d:'Figura con logo para centro de mesa',q:200,pu:60,h:1.5,hechas:200,m:'Impresión 3D en PLA',f:{logos:true},s:'entregado'})
     ]});
 
-  pedido({no:'_'+fNo(addDays(hoy,-2))+' TERRAZA ALAMEDA AGS',fecha:d(-2),empresa:'Terraza Alameda',cliente:'Ramiro Esparza',ciudad:'Aguascalientes',fuera:true,entrega:d(6),envio:d(4),envioCosto:3500,
+  pedido({no:'_'+fNo(addDays(hoy,-2))+' TERRAZA ALAMEDA AGS',fecha:d(-2),empresa:'Terraza Alameda',cliente:'Ramiro Esparza',ciudad:'Aguascalientes',fuera:true,entrega:d(6),envio:d(4),envioCosto:1800,
     piezas:[
-      pieza({c:'Mini veladora',d:'Sin personalización',q:100,pu:29.79,t:'ens',m:'Veladora de cera, vaso de vidrio',s:'por_iniciar'}),
-      pieza({c:'Porta veladoras',d:'Incluye pilas.',q:30,pu:980,t:'ens',m:'Acrílico y LED',f:{luz:true},s:'produccion',a:'p2'})
+      pieza({c:'Porta veladoras 3D',d:'Base con logo para veladora mediana',q:30,pu:180,h:1.2,m:'Impresión 3D en PLA',f:{logos:true,luz:true},s:'por_iniciar'}),
+      pieza({c:'Señalética 3D',d:'Baños, salida y terraza, con logo',q:10,pu:420,h:2,m:'Impresión 3D en PLA',md:'25 × 10 cm',f:{logos:true},s:'por_iniciar'})
     ]});
 
   pedido({no:'_'+fNo(addDays(hoy,-1))+' MEZCALERÍA PONIENTE',fecha:d(-1),empresa:'Mezcalería Poniente',cliente:'Mariana Cué',ciudad:'León',entrega:d(21),
-    piezas:[pieza({c:'Cajas invitación + EVA + suaje',d:'Con EVA, medida por autorizar',q:60,pu:415,t:'papel',m:'Cartón rígido, EVA, suaje',s:'por_iniciar'}),pieza({c:'Letras 3D para la barra',d:'Nombre de la mezcalería, 40 cm de alto',q:1,pu:3200,t:'tresd',m:'Impresión 3D en PLA, acabado mate',md:'40 cm de alto',f:{color:true,luz:true},s:'por_iniciar',h:14})]});
+    piezas:[pieza({c:'Letras 3D para la barra',d:'Nombre de la mezcalería, 40 cm de alto',q:1,pu:3200,h:14,m:'Impresión 3D en PLA, acabado mate',md:'40 cm de alto',f:{color:true,luz:true},s:'por_iniciar'})]});
 
   pedido({no:'_'+fNo(addDays(hoy,-6))+' VÁNDALO BAR',fecha:d(-6),empresa:'Vándalo Bar',cliente:'Karla Sotelo',ciudad:'León',entrega:d(-1),
     piezas:[
-      pieza({c:'Botas españolas',d:'DTF UV, un diseño',q:100,pu:640,t:'dtf',m:'Vidrio, impresión DTF UV',f:{color:true,logos:true},s:'listo',a:'p3'}),
-      pieza({c:'Macro veladora',d:'Serigrafía epóxica',q:50,pu:220,t:'seri',m:'Vaso de vidrio grande',f:{logos:true,luz:true},s:'produccion',a:'p2'})
+      pieza({c:'Presentador de botella con logo',d:'Base 3D para botella',q:4,pu:1350,h:6,hechas:4,m:'Impresión 3D en PLA',f:{logos:true,bengala:true},s:'listo'}),
+      pieza({c:'Charolas 3D para shots',d:'Charola de 12 shots con logo',q:8,pu:640,h:4,imp:6,hechas:5,m:'Impresión 3D en PLA',f:{logos:true},s:'produccion'})
     ]});
   return P;
 }
@@ -554,25 +568,32 @@ function fNo(d){return pad(d.getDate())+pad(d.getMonth()+1)+String(d.getFullYear
 /* ---------- cálculos ---------- */
 const subtotal=p=>p.piezas.reduce((s,z)=>s+(z.pu||0)*z.cantidad,0)+(p.envioCosto||0);
 const limite=p=>deIso(p.fuera&&p.envio?p.envio:p.entrega);
+const faltan=z=>Math.max(0,z.cantidad-(z.hechas||0));
+const horasRestantes=z=>z.horas?faltan(z)*z.horas:null;
+const terminaEn=horas=>addDays(hoy,Math.max(0,Math.ceil(horas/HORAS_DIA)));
 function estadoPieza(p,z){
   if(z.estado==='entregado')return {cls:'entregado',txt:'Entregado',mal:false};
   const lim=limite(p);
   if(z.estado==='listo'){if(deIso(p.entrega)<hoy)return {cls:'atrasado',txt:'Listo · entrega vencida',mal:true};return {cls:'listo',txt:'Listo',mal:false};}
-  if(lim<hoy)return {cls:'atrasado',txt:'Atrasado · '+ESTADOS[z.estado].txt.toLowerCase(),mal:true};
-  return {cls:ESTADOS[z.estado].cls,txt:ESTADOS[z.estado].txt,mal:false};
+  const base=z.estado==='produccion'?'Imprimiendo · impresora '+z.impresora:(z.impresora?'En cola · impresora '+z.impresora:'Sin impresora');
+  if(lim<hoy)return {cls:'atrasado',txt:'Atrasado · '+base.toLowerCase(),mal:true};
+  if(z.estado==='produccion'&&z.horas&&terminaEn(horasRestantes(z))>lim)return {cls:'atrasado',txt:'No alcanza · impresora '+z.impresora,mal:true};
+  return {cls:z.estado==='produccion'?'produccion':'',txt:base,mal:false};
 }
 const piezasCon=fn=>{const out=[];pedidos.forEach(p=>p.piezas.forEach(z=>{if(fn(p,z))out.push({p,z});}));return out;};
 const pendiente=z=>z.estado!=='entregado';
+/* lo que tiene cada impresora: la que imprime primero, luego su cola por fecha límite */
+function deImpresora(n){return piezasCon((p,z)=>z.impresora===n&&(z.estado==='produccion'||z.estado==='por_iniciar')).sort((a,b)=>{const ra=a.z.estado==='produccion'?0:1,rb=b.z.estado==='produccion'?0:1;if(ra!==rb)return ra-rb;return limite(a.p)-limite(b.p);});}
+const activa=n=>deImpresora(n).find(x=>x.z.estado==='produccion')||null;
 
 /* ---------- estado y almacenamiento ---------- */
 const KEY='things-taller-v1';
-let pedidos,sel=null,filtroT='pendientes',filtroTaller='todos',filtroPersona='todas',busca='',hoja=null,form=null;
-let impresoras=3;try{impresoras=parseInt(localStorage.getItem('things-impresoras'),10)||3;}catch(e){}
+let pedidos,mant=[5],sel=null,filtroT='pendientes',busca='',hoja=null,form=null;
 function cargar(){
-  try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.dia===iso(hoy)&&Array.isArray(s.pedidos)&&s.pedidos.length){pedidos=s.pedidos;return;}}catch(e){}
-  pedidos=generarBase();guardar();
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.dia===iso(hoy)&&Array.isArray(s.pedidos)&&s.pedidos.length){pedidos=s.pedidos;mant=Array.isArray(s.mant)?s.mant:[];return;}}catch(e){}
+  pedidos=generarBase();mant=[5];guardar();
 }
-function guardar(){try{localStorage.setItem(KEY,JSON.stringify({dia:iso(hoy),pedidos}));}catch(e){toast('No cupo en el navegador (fotos muy grandes). Se guardó en memoria.','alert');}}
+function guardar(){try{localStorage.setItem(KEY,JSON.stringify({dia:iso(hoy),pedidos,mant}));}catch(e){toast('No cupo en el navegador (fotos muy grandes). Se guardó en memoria.','alert');}}
 const porNo=no=>pedidos.find(p=>p.no===no);
 const buscarPieza=id=>{for(const p of pedidos){const z=p.piezas.find(x=>x.id===id);if(z)return {p,z};}return null;};
 
@@ -584,12 +605,12 @@ function toast(msg,ico){const t=$('toast');t.innerHTML=(ico?ICO[ico]:ICO.check)+
 function renderCifras(){
   const atr=piezasCon((p,z)=>pendiente(z)&&estadoPieza(p,z).mal).length;
   const sem=piezasCon((p,z)=>pendiente(z)&&!estadoPieza(p,z).mal&&dias(limite(p),hoy)<=7).length;
-  const prod=piezasCon((p,z)=>z.estado==='produccion').length;
+  const ocupadas=IMPRESORAS.filter(i=>activa(i.n)).length;
   const listos=piezasCon((p,z)=>z.estado==='listo').length;
   $('cifras').innerHTML=
     '<button class="cifra rojo'+(filtroT==='atrasados'?' on':'')+'" data-ft="atrasados"><span class="v num">'+atr+'</span><span class="k">Atrasadas</span></button>'+
     '<button class="cifra neon'+(filtroT==='semana'?' on':'')+'" data-ft="semana"><span class="v num">'+sem+'</span><span class="k">Salen esta semana</span></button>'+
-    '<button class="cifra'+(filtroT==='produccion'?' on':'')+'" data-ft="produccion"><span class="v num">'+prod+'</span><span class="k">En producción</span></button>'+
+    '<button class="cifra'+(filtroT==='produccion'?' on':'')+'" data-ft="produccion"><span class="v num">'+ocupadas+'<span style="font-size:18px;color:var(--ink2)"> de '+N_IMPRESORAS+'</span></span><span class="k">Impresoras trabajando</span></button>'+
     '<button class="cifra negro'+(filtroT==='listos'?' on':'')+'" data-ft="listos"><span class="v num">'+listos+'</span><span class="k">Listas para entregar</span></button>';
 }
 const FT={
@@ -601,48 +622,88 @@ const FT={
   entregadas:(p,z)=>z.estado==='entregado',
   todas:()=>true
 };
-function renderTaller(){
-  renderCifras();
-  $('tallerTitulo').textContent={pendientes:'Pendientes',atrasados:'Atrasadas',semana:'Salen esta semana',produccion:'En producción',listos:'Listas para entregar',entregadas:'Entregadas',todas:'Todas las piezas'}[filtroT];
-  const nT=k=>piezasCon((p,z)=>FT[filtroT](p,z)&&(k==='todos'||z.taller===k)).length;
-  $('filtrosTaller').innerHTML=
-    '<button class="fchip'+(filtroTaller==='todos'?' on':'')+'" data-taller="todos">Todos los procesos <span class="cnt">'+nT('todos')+'</span></button>'+
-    Object.keys(TALLERES).map(k=>'<button class="fchip'+(filtroTaller===k?' on':'')+'" data-taller="'+k+'">'+esc(TALLERES[k].nombre)+' <span class="cnt">'+nT(k)+'</span></button>').join('')+
-    '<span style="flex:1"></span>'+
-    '<button class="fchip'+(filtroT==='pendientes'?' on':'')+'" data-ft="pendientes">Pendientes</button><button class="fchip'+(filtroT==='entregadas'?' on':'')+'" data-ft="entregadas">Entregadas</button><button class="fchip'+(filtroT==='todas'?' on':'')+'" data-ft="todas">Todas</button>';
-  const nP=k=>piezasCon((p,z)=>FT[filtroT](p,z)&&(filtroTaller==='todos'||z.taller===filtroTaller)&&(k==='todas'||(k==='nadie'?!z.asignada:z.asignada===k))).length;
-  $('filtrosPersona').innerHTML='<span class="mini" style="margin-right:4px">Equipo</span><button class="fchip'+(filtroPersona==='todas'?' on':'')+'" data-persona="todas">Todas <span class="cnt">'+nP('todas')+'</span></button>'+EQUIPO.map(e=>'<button class="fchip'+(filtroPersona===e.id?' on':'')+'" data-persona="'+e.id+'">'+esc(e.corto)+' <span class="cnt">'+nP(e.id)+'</span></button>').join('')+'<button class="fchip'+(filtroPersona==='nadie'?' on':'')+'" data-persona="nadie">Sin asignar <span class="cnt">'+nP('nadie')+'</span></button>';
-  let items=piezasCon((p,z)=>FT[filtroT](p,z)&&(filtroTaller==='todos'||z.taller===filtroTaller)&&(filtroPersona==='todas'||(filtroPersona==='nadie'?!z.asignada:z.asignada===filtroPersona)));
+const fotoMini=z=>z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':ICO.cara;
+function renderImpresoras(){
+  let ocupadas=0,mantN=0;
+  $('impresoras').innerHTML=IMPRESORAS.map(i=>{
+    const enMant=mant.includes(i.n);if(enMant)mantN++;
+    const lista=deImpresora(i.n);const ah=activa(i.n);if(ah)ocupadas++;
+    const despues=lista.filter(x=>!ah||x.z.id!==ah.z.id);
+    let cls='imp'+(enMant?' mant':ah?'':' libre');
+    let cuerpo='',mal=false;
+    if(ah){
+      const {p,z}=ah;const lim=limite(p);const hr=horasRestantes(z);const term=hr==null?null:terminaEn(hr);
+      mal=(term&&term>lim)||lim<hoy;
+      const pct=Math.round((z.hechas||0)/z.cantidad*100);
+      cuerpo='<div class="ahora"><div class="th">'+fotoMini(z)+'</div><div><h3>'+esc(z.concepto)+'</h3><div class="cli">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' · '+esc(p.no)+'</div></div></div>'+
+        '<div class="avance"><i class="'+(pct>=100?'ok':'')+'" style="width:'+Math.min(100,pct)+'%"></i></div>'+
+        '<div class="hechas"><span>Hechas</span><input type="number" min="0" max="'+z.cantidad+'" step="1" value="'+(z.hechas||0)+'" data-hechas="'+z.id+'" aria-label="Piezas hechas"><span>de <b>'+z.cantidad+'</b> · faltan '+faltan(z)+(z.horas?' × '+z.horas+' h = <b>'+hr.toLocaleString('es-MX')+' h</b>':'')+'</span></div>'+
+        '<div class="termina'+(mal?' mal':'')+'">'+(term?'Termina ≈ <b>'+fDia(term)+'</b> ('+relativo(term)+')':'Sin horas por pieza: no se puede estimar')+' · '+(p.fuera&&p.envio?'sale el '+fDia(deIso(p.envio)):'entrega '+fDia(deIso(p.entrega)))+(mal?' · <b>NO ALCANZA</b>':' · alcanza')+'</div>';
+    }else if(enMant){
+      cuerpo='<div class="libre-msg">'+ICO.alert+'<span>En mantenimiento</span></div>';
+    }else{
+      cuerpo='<div class="libre-msg">'+ICO.cara+'<span>Libre · manda una pieza desde la cola</span></div>';
+    }
+    if(despues.length){
+      let acum=ah?(horasRestantes(ah.z)||0):0;
+      cuerpo+='<div class="despues">Después: '+despues.map(({p,z})=>{const h=horasRestantes(z);acum+=h||0;const t=terminaEn(acum);const malQ=t>limite(p);return '<b>'+z.cantidad+' '+esc(z.concepto)+'</b> ('+esc(p.empresa)+(h!=null?', '+h.toLocaleString('es-MX')+' h':'')+') · termina ≈ '+fDia(t)+(malQ?' <span class="hl rojo">no alcanza</span>':'');}).join(' · ')+'</div>';
+    }
+    let pie='';
+    if(ah)pie+='<button class="btn small negro" data-act="lote" data-z="'+ah.z.id+'">Lote terminado</button><button class="btn small ghost" data-act="quitar-imp" data-z="'+ah.z.id+'">Quitar</button>';
+    else if(!enMant&&despues.length)pie+='<button class="btn small neon" data-act="empezar" data-z="'+despues[0].z.id+'">Empezar: '+esc(despues[0].z.concepto)+'</button>';
+    pie+='<button class="btn small'+(enMant?' rojo':' ghost')+'" data-act="mant" data-n="'+i.n+'">'+(enMant?'Volver a usar':'Mantenimiento')+'</button>';
+    return '<article class="'+cls+(mal?' mal':'')+'"><div class="imp-h"><div><b>'+esc(i.nombre)+'</b><small>Bambu Lab</small></div><span class="estado '+(enMant?'atrasado':ah?'produccion':'')+'">'+(enMant?'Mantenimiento':ah?'Imprimiendo':'Libre')+'</span></div><div class="imp-b">'+cuerpo+'</div><div class="imp-f">'+pie+'</div></article>';
+  }).join('');
+  $('impResumen').textContent=ocupadas+' imprimiendo · '+(N_IMPRESORAS-ocupadas-mantN)+' libres'+(mantN?' · '+mantN+' en mantenimiento':'');
+}
+function renderCola(){
+  const cola=piezasCon((p,z)=>z.estado==='por_iniciar'&&!z.impresora).sort((a,b)=>limite(a.p)-limite(b.p));
+  $('colaResumen').textContent=plural(cola.length,'pieza','piezas')+' · '+cola.reduce((s,x)=>s+(horasRestantes(x.z)||0),0).toLocaleString('es-MX')+' h de impresión';
+  if(!cola.length){$('cola').innerHTML='<p class="muted">Todo lo pendiente ya tiene impresora.</p>';return;}
+  const opciones=IMPRESORAS.map(i=>{const enMant=mant.includes(i.n);const ah=activa(i.n);const q=deImpresora(i.n);let txt=i.nombre+(enMant?' · mantenimiento':ah?' · ocupada, '+plural(q.length,'pieza','piezas')+' antes':' · libre');return '<option value="'+i.n+'"'+(enMant?' disabled':'')+'>'+esc(txt)+'</option>';}).join('');
+  $('cola').innerHTML='<table><thead><tr><th>Pieza</th><th>Cant.</th><th class="r">Horas</th><th>Límite</th><th>Mandar a</th></tr></thead><tbody>'+cola.map(({p,z})=>{
+    const lim=limite(p);const urg=dias(lim,hoy)<=3;const h=horasRestantes(z);
+    return '<tr><td><b>'+esc(z.concepto)+'</b><br><span class="tiny muted">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' · '+esc(p.no)+'</span></td><td class="num">'+z.cantidad+(z.horas?' × '+z.horas+' h':'')+'</td><td class="r num">'+(h==null?'<span class="hl rojo">sin horas</span>':h.toLocaleString('es-MX')+' h')+'</td><td><span class="'+(lim<hoy?'hl rojo':urg?'hl':'')+'">'+(p.fuera?'sale ':'entrega ')+fDia(lim)+'</span><br><span class="tiny muted">'+relativo(lim)+'</span></td><td><select class="cola-sel" data-cola="'+z.id+'"><option value="">Elegir…</option>'+opciones+'</select></td></tr>';
+  }).join('')+'</tbody></table><p class="tiny muted" style="margin-top:8px">En orden de fecha límite. Si una pieza va a repartirse entre varias impresoras, captúrala como dos renglones.</p>';
+}
+function renderTarjetas(){
+  $('tallerTitulo').textContent={pendientes:'Pendientes',atrasados:'Atrasadas',semana:'Salen esta semana',produccion:'Imprimiendo',listos:'Listas para entregar',entregadas:'Entregadas',todas:'Todas las piezas'}[filtroT];
+  const n=k=>piezasCon(FT[k]).length;
+  $('filtrosTaller').innerHTML=[['pendientes','Pendientes'],['produccion','Imprimiendo'],['listos','Listas'],['entregadas','Entregadas'],['todas','Todas']].map(f=>'<button class="fchip'+(filtroT===f[0]?' on':'')+'" data-ft="'+f[0]+'">'+f[1]+' <span class="cnt">'+n(f[0])+'</span></button>').join('');
+  let items=piezasCon(FT[filtroT]);
   items.sort((a,b)=>{const ra=pendiente(a.z)?0:1,rb=pendiente(b.z)?0:1;if(ra!==rb)return ra-rb;const la=limite(a.p),lb=limite(b.p);return ra?lb-la:la-lb;});
   $('tallerResumen').textContent=plural(items.length,'pieza','piezas')+' · '+items.reduce((s,x)=>s+x.z.cantidad,0).toLocaleString('es-MX')+' unidades';
   $('tarjetas').innerHTML=items.length?items.map(({p,z})=>{
-    const e=estadoPieza(p,z);const lim=limite(p);const ent=deIso(p.entrega);
+    const e=estadoPieza(p,z);const ent=deIso(p.entrega);const lim=limite(p);
     let fechas='';
     if(p.fuera&&p.envio){fechas='<span><span class="hl'+(e.mal?' rojo':'')+'">SALE: '+fDia(deIso(p.envio)).toUpperCase()+'</span></span><span class="cuando'+(e.mal?' mal':'')+'">envío a '+esc(p.ciudad)+' · entrega '+fDia(ent)+' · '+(z.estado==='entregado'?'entregado':relativo(lim))+'</span>';}
     else{fechas='<span><span class="hl'+(e.mal?' rojo':'')+'">ENTREGA: '+fDia(ent).toUpperCase()+'</span></span><span class="cuando'+(e.mal?' mal':'')+'">'+(z.estado==='entregado'?'entregado':relativo(ent))+'</span>';}
     let acts='';
-    if(z.estado==='por_iniciar')acts+='<button class="btn small neon" data-act="estado" data-z="'+z.id+'" data-e="produccion">Iniciar</button>';
-    if(z.estado==='produccion')acts+='<button class="btn small negro" data-act="estado" data-z="'+z.id+'" data-e="listo">Marcar listo</button>';
+    if(z.estado==='produccion')acts+='<button class="btn small negro" data-act="lote" data-z="'+z.id+'">Lote terminado</button>';
     if(z.estado==='listo')acts+='<button class="btn small negro" data-act="estado" data-z="'+z.id+'" data-e="entregado">Entregado</button>';
     if(z.estado==='entregado')acts+='<button class="btn small ghost" data-act="estado" data-z="'+z.id+'" data-e="listo">Regresar a listo</button>';
     acts+='<button class="btn small" data-act="ficha" data-z="'+z.id+'">Ficha</button>';
-    return '<article class="tarjeta'+(e.mal?' atrasada':'')+'"><div class="foto">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':'<div class="ph">'+ICO.cara+'<span>Foto pendiente</span></div>')+'<span class="tag taller">'+esc(TALLERES[z.taller].nombre)+'</span><span class="qty">× '+z.cantidad.toLocaleString('es-MX')+'</span></div>'+
-      '<div class="cuerpo"><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="estado '+e.cls+'">'+esc(e.txt)+'</span>'+(z.asignada?'<span class="tag neon">'+esc(persona(z.asignada).corto)+'</span>':'<span class="tag" style="background:var(--gris);color:var(--ink2)">Sin asignar</span>')+'</div><h3>'+esc(z.concepto)+'</h3>'+(z.taller==='tresd'&&z.horas?'<p class="tiny muted">≈ '+(z.cantidad*z.horas).toLocaleString('es-MX')+' h de impresión ('+z.cantidad+' × '+z.horas+' h)</p>':'')+(z.descripcion?'<p class="desc">'+esc(z.descripcion)+'</p>':'')+'<div class="cli">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' <span class="muted tiny">· '+esc(p.no)+'</span></div><div class="fechas">'+fechas+'</div><div class="acts">'+acts+'</div></div></article>';
+    const avance=z.estado==='produccion'||z.estado==='por_iniciar'?'<p class="tiny muted">'+(z.hechas||0)+' de '+z.cantidad+' hechas'+(z.horas?' · faltan '+horasRestantes(z).toLocaleString('es-MX')+' h':'')+'</p>':'';
+    return '<article class="tarjeta'+(e.mal?' atrasada':'')+'"><div class="foto">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':'<div class="ph">'+ICO.cara+'<span>Foto pendiente</span></div>')+(z.impresora?'<span class="tag taller">Impresora '+z.impresora+'</span>':'')+'<span class="qty">× '+z.cantidad.toLocaleString('es-MX')+'</span></div>'+
+      '<div class="cuerpo"><div><span class="estado '+e.cls+'">'+esc(e.txt)+'</span></div><h3>'+esc(z.concepto)+'</h3>'+(z.descripcion?'<p class="desc">'+esc(z.descripcion)+'</p>':'')+avance+'<div class="cli">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' <span class="muted tiny">· '+esc(p.no)+'</span></div><div class="fechas">'+fechas+'</div><div class="acts">'+acts+'</div></div></article>';
   }).join(''):'<p class="muted" style="padding:10px 0">No hay piezas con ese filtro.</p>';
-  renderCola3D();
 }
-/* cola de impresión 3D: horas encoladas contra fecha límite, con N impresoras */
-function renderCola3D(){
-  const inp=$('impresoras');if(inp&&document.activeElement!==inp)inp.value=impresoras;
-  const cola=piezasCon((p,z)=>z.taller==='tresd'&&pendiente(z)&&z.estado!=='listo').sort((a,b)=>limite(a.p)-limite(b.p));
-  if(!cola.length){$('cola3d').innerHTML='<p class="muted">No hay piezas 3D pendientes.</p>';return;}
-  let acum=0,sinHoras=false;
-  const filas=cola.map(({p,z})=>{
-    const h=z.horas?z.cantidad*z.horas:null;if(h==null)sinHoras=true;acum+=h||0;
-    const diasNec=Math.ceil(acum/(impresoras*HORAS_DIA));const termina=addDays(hoy,diasNec);const lim=limite(p);const mal=termina>lim;
-    return '<tr><td><b>'+esc(z.concepto)+'</b><br><span class="tiny muted">'+esc(p.empresa)+' · '+esc(p.no)+'</span></td><td class="num">'+z.cantidad+(z.horas?' × '+z.horas+' h':'')+'</td><td class="r num">'+(h==null?'<span class="hl rojo">sin horas</span>':h.toLocaleString('es-MX')+' h')+'</td><td class="r num">'+acum.toLocaleString('es-MX')+' h</td><td>'+fDia(termina)+'</td><td>'+fDia(lim)+'</td><td><span class="estado '+(mal?'atrasado':'listo')+'">'+(mal?'No alcanza':'Alcanza')+'</span></td></tr>';
-  }).join('');
-  $('cola3d').innerHTML='<table><thead><tr><th>Pieza</th><th>Cant.</th><th class="r">Horas</th><th class="r">Acumulado</th><th>Termina ≈</th><th>Límite</th><th></th></tr></thead><tbody>'+filas+'</tbody></table><p class="tiny muted" style="margin-top:8px">Con '+plural(impresoras,'impresora','impresoras')+' a '+HORAS_DIA+' h útiles por día, en orden de fecha límite. Las horas por pieza las pone quien levanta el pedido.'+(sinHoras?' Hay piezas sin horas: no cuentan en la suma.':'')+'</p>';
+function renderTaller(){renderCifras();renderImpresoras();renderCola();renderTarjetas();}
+/* acciones del taller */
+function asignar(zid,n){
+  const r=buscarPieza(zid);if(!r)return;n=parseInt(n,10);if(!(n>0))return;
+  if(mant.includes(n)){toast('La impresora '+n+' está en mantenimiento','alert');return;}
+  r.z.impresora=n;
+  if(!activa(n)){r.z.estado='produccion';toast(r.z.concepto+': imprimiendo en la impresora '+n);}
+  else{r.z.estado='por_iniciar';toast(r.z.concepto+': en cola de la impresora '+n);}
+  guardar();renderTodo();
+}
+function lote(zid){
+  const r=buscarPieza(zid);if(!r)return;const n=r.z.impresora;
+  r.z.estado='listo';r.z.hechas=r.z.cantidad;r.z.impresora=null;
+  let msg=r.z.concepto+': listo para entregar.';
+  if(n&&!mant.includes(n)){const sig=deImpresora(n)[0];if(sig){sig.z.estado='produccion';msg+=' La impresora '+n+' sigue con '+sig.z.concepto+'.';}else msg+=' La impresora '+n+' queda libre.';}
+  guardar();renderTodo();toast(msg,'check');
 }
 
 /* ---------- pedidos (vista de Marce) ---------- */
@@ -672,7 +733,7 @@ function renderPanel(){
     '<div class="acciones"><button class="btn neon small" data-act="cotizacion" data-no="'+esc(p.no)+'">'+ICO.print+'Cotización</button><button class="btn small" data-act="agregar" data-no="'+esc(p.no)+'">+ Pieza</button></div></div>'+
     '<div class="pb">'+
     '<div class="sec"><div class="kv"><div><span class="k">Pedido</span><span class="v">'+fDia(deIso(p.fecha))+' '+deIso(p.fecha).getFullYear()+'</span></div><div><span class="k">Entrega</span><span class="v">'+fDia(deIso(p.entrega))+' · '+relativo(deIso(p.entrega))+'</span></div>'+(p.fuera?'<div><span class="k">Sale el envío</span><span class="v">'+(p.envio?fDia(deIso(p.envio))+' · '+relativo(deIso(p.envio)):'por definir')+'</span></div><div><span class="k">Envío</span><span class="v">'+esc(p.ciudad)+' · '+mxn(p.envioCosto)+'</span></div>':'')+'</div>'+(p.notas?'<p class="tiny muted" style="margin-top:8px">'+esc(p.notas)+'</p>':'')+'</div>'+
-    '<div class="sec"><h4>Piezas <span class="tiny muted">'+p.piezas.length+'</span></h4>'+p.piezas.map(z=>{const e=estadoPieza(p,z);return '<div class="pieza-mini"><div class="th">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':ICO.cara)+'</div><div><b>'+z.cantidad.toLocaleString('es-MX')+' × '+esc(z.concepto)+'</b><span>'+esc(TALLERES[z.taller].nombre)+(z.asignada?' · '+esc(persona(z.asignada).corto):'')+(z.pu!=null?' · '+mxn(z.pu)+' c/u':' · precio por capturar')+'</span><br><span class="estado '+e.cls+'" style="margin-top:3px">'+esc(e.txt)+'</span></div><button class="btn small" data-act="ficha" data-z="'+z.id+'">Ficha</button></div>';}).join('')+'</div>'+
+    '<div class="sec"><h4>Piezas <span class="tiny muted">'+p.piezas.length+'</span></h4>'+p.piezas.map(z=>{const e=estadoPieza(p,z);return '<div class="pieza-mini"><div class="th">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':ICO.cara)+'</div><div><b>'+z.cantidad.toLocaleString('es-MX')+' × '+esc(z.concepto)+'</b><span>'+(z.impresora?'Impresora '+z.impresora:z.estado==='por_iniciar'?'Sin impresora':'')+(z.horas?' · '+z.horas+' h/pieza':'')+(z.pu!=null?' · '+mxn(z.pu)+' c/u':' · precio por capturar')+'</span><br><span class="estado '+e.cls+'" style="margin-top:3px">'+esc(e.txt)+'</span></div><button class="btn small" data-act="ficha" data-z="'+z.id+'">Ficha</button></div>';}).join('')+'</div>'+
     '<div class="sec"><h4>Dinero</h4><div class="kv"><div><span class="k">Subtotal</span><span class="v num">'+mxn(sub)+'</span></div><div><span class="k">IVA 16 %</span><span class="v num">'+mxn(iva)+'</span></div><div><span class="k">Total</span><span class="v num">'+mxn(sub+iva)+'</span></div>'+(sinPrecio?'<div><span class="k">Ojo</span><span class="v" style="color:var(--rojo)">Hay piezas sin precio</span></div>':'')+'</div></div>'+
     '</div>';
 }
@@ -684,7 +745,7 @@ function nuevoForm(no){
     no:base?base.no:null,
     cab:base?null:{empresa:'',cliente:'',whatsapp:'',ciudad:'León',fuera:false,entrega:iso(addDays(hoy,14)),envio:iso(addDays(hoy,12)),envioCosto:0,noPedido:'',notas:''},
     piezas:[],
-    actual:{concepto:'',descripcion:'',cantidad:'',pu:'',taller:'tresd',material:'',medidas:'',especificaciones:'',flags:{color:false,luz:false,bengala:false,logos:false},imagen:null,asignada:'',horas:''},
+    actual:{concepto:'',descripcion:'',cantidad:'',pu:'',horas:'',impresora:'',productor:'',material:'Impresión 3D en PLA',medidas:'',especificaciones:'',flags:{color:false,luz:false,bengala:false,logos:false},imagen:null},
     error:''
   };
 }
@@ -699,7 +760,7 @@ function leerActual(){
   if(!form)return;
   const g=id=>{const e=$(id);return e?e.value:'';};
   const a=form.actual;
-  a.concepto=g('zConcepto');a.descripcion=g('zDesc');a.cantidad=g('zQty');a.pu=g('zPu');a.taller=g('zTaller')||a.taller;a.material=g('zMat');a.medidas=g('zMed');a.especificaciones=g('zEsp');a.asignada=g('zAsig');a.horas=g('zHoras');
+  a.concepto=g('zConcepto');a.descripcion=g('zDesc');a.cantidad=g('zQty');a.pu=g('zPu');a.horas=g('zHoras');a.impresora=g('zImp');a.productor=g('zProd');a.material=g('zMat');a.medidas=g('zMed');a.especificaciones=g('zEsp');
   ['color','luz','bengala','logos'].forEach(k=>{const e=$('zF_'+k);if(e)a.flags[k]=e.checked;});
 }
 function sugerirNo(){if(!form||!form.cab)return '';return '_'+fNo(hoy)+' '+(form.cab.empresa||'').toUpperCase().trim();}
@@ -714,16 +775,16 @@ function renderForm(){
     '<div class="dos" id="fEnvioBox"'+(c.fuera?'':' hidden')+'><label class="campo"><span>Sale el envío</span><input id="fEnvio" type="date" value="'+esc(c.envio)+'"></label><label class="campo"><span>Costo del envío</span><input id="fEnvioCosto" type="number" min="0" step="1" value="'+esc(c.envioCosto||'')+'" placeholder="0"></label></div>'+
     '<label class="campo"><span>Notas</span><input id="fNotas" value="'+esc(c.notas)+'" placeholder="Anticipo, arte pendiente, quién recibe…"></label>'+
     '</div>':'';
-  const lista=form.piezas.length?'<div class="sec"><h4>Piezas capturadas <span class="tiny muted">'+form.piezas.length+'</span></h4>'+form.piezas.map((z,i)=>'<div class="pieza-mini"><div class="th">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':ICO.cara)+'</div><div><b>'+z.cantidad+' × '+esc(z.concepto)+'</b><span>'+esc(TALLERES[z.taller].nombre)+(z.pu!=null?' · '+mxn(z.pu)+' c/u':'')+'</span></div><button class="btn small ghost" data-act="quitar" data-i="'+i+'">Quitar</button></div>').join('')+'</div>':'';
+  const lista=form.piezas.length?'<div class="sec"><h4>Piezas capturadas <span class="tiny muted">'+form.piezas.length+'</span></h4>'+form.piezas.map((z,i)=>'<div class="pieza-mini"><div class="th">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':ICO.cara)+'</div><div><b>'+z.cantidad+' × '+esc(z.concepto)+'</b><span>'+(z.impresora?'Impresora '+z.impresora:'A la cola')+(z.horas?' · '+z.horas+' h/pieza':'')+(z.pu!=null?' · '+mxn(z.pu)+' c/u':'')+'</span></div><button class="btn small ghost" data-act="quitar" data-i="'+i+'">Quitar</button></div>').join('')+'</div>':'';
   el.innerHTML=
     '<div class="ph"><div class="top"><div><span class="mini">'+(c?'Nuevo pedido':'Agregar pieza a '+esc(form.no))+'</span><h2>'+(c?'Levantar pedido':'Nueva pieza')+'</h2></div><button class="btn ghost small" data-act="cancelar-form" aria-label="Cancelar">'+ICO.x+'</button></div></div>'+
     '<div class="pb">'+cab+lista+
     '<div class="sec"><div class="subform"><h4>'+(form.piezas.length?'Otra pieza':'Pieza')+' <span class="tiny muted" style="font-family:var(--texto);text-transform:none;letter-spacing:0">lo que ve el taller</span></h4>'+
     '<div class="previa"><div class="th" id="zPrevia">'+(a.imagen?'<img src="'+esc(a.imagen)+'" alt="">':ICO.foto)+'</div><label class="campo"><span>Foto o render</span><input id="zImg" type="file" accept="image/*"><span style="text-transform:none;letter-spacing:0;font-weight:500">Desde el celular abre la cámara.</span></label></div>'+
-    '<div class="dos"><label class="campo"><span>Concepto *</span><input id="zConcepto" value="'+esc(a.concepto)+'" placeholder="Veladora mediana, hielera, mazapán…"></label><label class="campo"><span>Proceso / taller *</span><select id="zTaller">'+Object.keys(TALLERES).map(k=>'<option value="'+k+'"'+(a.taller===k?' selected':'')+'>'+esc(TALLERES[k].nombre)+' · '+esc(TALLERES[k].largo)+'</option>').join('')+'</select></label></div>'+
-    '<div class="dos"><label class="campo"><span>Asignar a</span><select id="zAsig"><option value="">Sin asignar</option>'+EQUIPO.map(e=>'<option value="'+e.id+'"'+(a.asignada===e.id?' selected':'')+'>'+esc(e.nombre)+'</option>').join('')+'</select></label><label class="campo" id="zHorasBox"'+(a.taller==='tresd'?'':' hidden')+'><span>Horas de impresión por pieza</span><input id="zHoras" type="number" min="0" step="0.5" value="'+esc(a.horas)+'" inputmode="decimal" placeholder="Bambu Lab"></label></div>'+
-    '<label class="campo"><span>Descripción</span><input id="zDesc" value="'+esc(a.descripcion)+'" placeholder="Serigrafía epóxica, dos diseños…"></label>'+
-    '<div class="dos"><label class="campo"><span>Cantidad *</span><input id="zQty" type="number" min="1" step="1" value="'+esc(a.cantidad)+'" inputmode="numeric"></label><label class="campo"><span>Precio unitario</span><input id="zPu" type="number" min="0" step="0.01" value="'+esc(a.pu)+'" inputmode="decimal" placeholder="sin IVA"></label></div>'+
+    '<div class="dos"><label class="campo"><span>Concepto *</span><input id="zConcepto" value="'+esc(a.concepto)+'" placeholder="Hielera, mazapán, letras 3D…"></label><label class="campo"><span>Cantidad *</span><input id="zQty" type="number" min="1" step="1" value="'+esc(a.cantidad)+'" inputmode="numeric"></label></div>'+
+    '<div class="dos"><label class="campo"><span>Horas de impresión por pieza</span><input id="zHoras" type="number" min="0" step="0.5" value="'+esc(a.horas)+'" inputmode="decimal" placeholder="Bambu Lab"></label><label class="campo"><span>Impresora</span><select id="zImp"><option value="">Sin impresora (a la cola)</option>'+IMPRESORAS.map(i=>{const enMant=mant.includes(i.n);return '<option value="'+i.n+'"'+(String(a.impresora)===String(i.n)?' selected':'')+(enMant?' disabled':'')+'>'+esc(i.nombre)+(enMant?' · mantenimiento':activa(i.n)?' · ocupada':' · libre')+'</option>';}).join('')+'</select></label></div>'+
+    '<label class="campo"><span>Descripción</span><input id="zDesc" value="'+esc(a.descripcion)+'" placeholder="Color, acabado, con vertedor…"></label>'+
+    '<div class="dos"><label class="campo"><span>Precio unitario</span><input id="zPu" type="number" min="0" step="0.01" value="'+esc(a.pu)+'" inputmode="decimal" placeholder="sin IVA"></label><label class="campo"><span>Productor responsable</span><input id="zProd" value="'+esc(a.productor)+'" placeholder="Como en la ficha"></label></div>'+
     '<div class="dos"><label class="campo"><span>Material</span><input id="zMat" value="'+esc(a.material)+'"></label><label class="campo"><span>Medidas</span><input id="zMed" value="'+esc(a.medidas)+'"></label></div>'+
     '<label class="campo"><span>Especificaciones</span><textarea id="zEsp" placeholder="Color, acabado, dónde va el logo…">'+esc(a.especificaciones)+'</textarea></label>'+
     '<div class="checks">'+['color','luz','bengala','logos'].map(k=>'<label><input type="checkbox" id="zF_'+k+'"'+(a.flags[k]?' checked':'')+'> '+k+'</label>').join('')+'</div>'+
@@ -735,7 +796,6 @@ function renderForm(){
   const fFuera=$('fFuera');if(fFuera)fFuera.addEventListener('change',()=>{leerCab();$('fEnvioBox').hidden=!fFuera.checked;});
   const fEmp=$('fEmpresa');if(fEmp)fEmp.addEventListener('input',()=>{const n=$('fNo');const antes=sugerirNo();leerCab();if(!n.value||n.value===antes)n.value=sugerirNo();});
   const fEnt=$('fEntrega');if(fEnt)fEnt.addEventListener('change',()=>{leerCab();const e=$('fEnvio');if(e&&fEnt.value)e.value=iso(addDays(deIso(fEnt.value),-2));leerCab();});
-  $('zTaller').addEventListener('change',()=>{$('zHorasBox').hidden=$('zTaller').value!=='tresd';});
   $('zImg').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{form.actual.imagen=await leerImagen(f);$('zPrevia').innerHTML='<img src="'+form.actual.imagen+'" alt="">';toast('Foto lista','check');}catch(x){toast('No se pudo leer la imagen','alert');}});
 }
 function leerImagen(file){
@@ -752,8 +812,9 @@ function agregarPieza(){
   if(!a.concepto.trim()){form.error='La pieza necesita un concepto.';renderForm();return false;}
   if(!(q>0)){form.error='Pon cuántas piezas son.';renderForm();return false;}
   const pu=a.pu===''?null:parseFloat(a.pu);
-  form.piezas.push({id:'z'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),concepto:a.concepto.trim(),descripcion:a.descripcion.trim(),cantidad:q,pu:isNaN(pu)?null:pu,taller:a.taller,material:a.material.trim(),medidas:a.medidas.trim(),especificaciones:a.especificaciones.trim(),flags:Object.assign({},a.flags),imagen:a.imagen,estado:'por_iniciar',productor:'',asignada:a.asignada||null,horas:(a.taller==='tresd'&&a.horas!=='')?(parseFloat(a.horas)||null):null,contexto:''});
-  form.actual={concepto:'',descripcion:'',cantidad:'',pu:'',taller:a.taller,material:'',medidas:'',especificaciones:'',flags:{color:false,luz:false,bengala:false,logos:false},imagen:null,asignada:'',horas:''};
+    const impN=parseInt(a.impresora,10)||null;
+  form.piezas.push({id:'z'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),concepto:a.concepto.trim(),descripcion:a.descripcion.trim(),cantidad:q,pu:isNaN(pu)?null:pu,horas:a.horas===''?null:(parseFloat(a.horas)||null),impresora:impN,hechas:0,material:a.material.trim(),medidas:a.medidas.trim(),especificaciones:a.especificaciones.trim(),flags:Object.assign({},a.flags),imagen:a.imagen,estado:(impN&&!activa(impN)&&!mant.includes(impN))?'produccion':'por_iniciar',productor:a.productor.trim(),contexto:''});
+  form.actual={concepto:'',descripcion:'',cantidad:'',pu:'',horas:'',impresora:'',productor:'',material:'Impresión 3D en PLA',medidas:'',especificaciones:'',flags:{color:false,luz:false,bengala:false,logos:false},imagen:null};
   form.error='';renderForm();return true;
 }
 function guardarForm(){
@@ -787,11 +848,11 @@ function renderFicha(zid){
     '<div class="hoja ficha">'+
     '<div class="banda"><span>&gt;&gt;&gt;&lt;&lt;&lt;</span><span>&gt;&gt;&gt;&lt;&lt;&lt;</span><span>&gt;&gt;&gt;&lt;&lt;&lt;</span></div>'+
     '<div class="h-in">'+
-    '<div class="h-cab"><div class="l">Operativa responsable: '+esc(THINGS.operativa)+'<br><span class="hl">Productor responsable: '+esc(z.productor||(z.asignada?persona(z.asignada).nombre:EQUIPO[0].nombre))+'</span></div><div class="c"><img class="logo" src="img/things-logo.png" alt="THINGS"></div><div class="r"><span class="hl fecha">DATE: '+fPunto(fecha)+'</span><h2>No. de pedido</h2><div class="no">'+esc(p.no)+'</div></div></div>'+
+    '<div class="h-cab"><div class="l">Operativa responsable: '+esc(THINGS.operativa)+'<br><span class="hl">Productor responsable: '+esc(z.productor||'XXX')+'</span></div><div class="c"><img class="logo" src="img/things-logo.png" alt="THINGS"></div><div class="r"><span class="hl fecha">DATE: '+fPunto(fecha)+'</span><h2>No. de pedido</h2><div class="no">'+esc(p.no)+'</div></div></div>'+
     '<div class="f-cliente"><div class="cbox">Cliente: <small>'+esc(p.empresa)+'</small></div><div class="studio">_THINGSSTUDIO <i>✓</i></div></div>'+
     '<ul class="f-campos">'+
       '<li><b>Producto:</b> '+esc(z.concepto)+(z.descripcion?' · '+esc(z.descripcion):'')+'</li>'+
-      '<li><b>Taller:</b> '+esc(TALLERES[z.taller].nombre)+'</li>'+
+      '<li><b>Taller:</b> 3D</li>'+
       '<li><b>Fecha de entrega:</b> '+fLarga(deIso(p.entrega))+(p.fuera&&p.envio?' · SALE EL ENVÍO EL '+fLarga(deIso(p.envio)):'')+'</li>'+
       '<li><b>Material:</b> '+esc(z.material||'—')+'</li>'+
       '<li><b>N. de piezas:</b> '+z.cantidad.toLocaleString('es-MX')+'</li>'+
@@ -844,11 +905,13 @@ function mostrar(v){
 function renderTodo(){renderTaller();renderPedidos();renderPanel();}
 $('tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(t){form=null;mostrar(t.dataset.view);renderPanel();}});
 document.querySelector('main').addEventListener('click',e=>{
-  const b=e.target.closest('[data-act],[data-ft],[data-taller],[data-persona]');if(!b)return;
+  const b=e.target.closest('[data-act],[data-ft]');if(!b)return;
   if(b.dataset.ft){filtroT=b.dataset.ft;renderTaller();return;}
-  if(b.dataset.persona){filtroPersona=b.dataset.persona;renderTaller();return;}
-  if(b.dataset.taller){filtroTaller=b.dataset.taller;renderTaller();return;}
   const act=b.dataset.act;
+  if(act==='lote'){lote(b.dataset.z);return;}
+  if(act==='empezar'){const r=buscarPieza(b.dataset.z);if(r){r.z.estado='produccion';guardar();renderTodo();toast(r.z.concepto+': imprimiendo en la impresora '+r.z.impresora);}return;}
+  if(act==='quitar-imp'){const r=buscarPieza(b.dataset.z);if(r){const n=r.z.impresora;r.z.impresora=null;r.z.estado='por_iniciar';guardar();renderTodo();toast(r.z.concepto+': regresó a la cola; la impresora '+n+' queda libre');}return;}
+  if(act==='mant'){const n=+b.dataset.n;if(mant.includes(n)){mant=mant.filter(x=>x!==n);toast('Impresora '+n+' de vuelta');}else{mant.push(n);const ah=activa(n);if(ah){ah.z.estado='por_iniciar';}toast('Impresora '+n+' en mantenimiento'+(ah?'; '+ah.z.concepto+' queda en pausa':''),'alert');}guardar();renderTodo();return;}
   if(act==='estado'){const r=buscarPieza(b.dataset.z);if(!r)return;r.z.estado=b.dataset.e;guardar();renderTodo();toast(r.z.concepto+': '+ESTADOS[b.dataset.e].txt.toLowerCase());return;}
   if(act==='ficha'){hoja={tipo:'ficha',id:b.dataset.z};renderFicha(b.dataset.z);mostrar('ficha');return;}
   if(act==='cotizacion'){hoja={tipo:'cot',id:b.dataset.no};renderCot(b.dataset.no);mostrar('cotizacion');return;}
@@ -864,8 +927,11 @@ document.querySelector('main').addEventListener('click',e=>{
   if(act==='cancelar-form'){form=null;renderPanel();return;}
 });
 $('buscaPed').addEventListener('input',e=>{busca=e.target.value;renderPedidos();});
-$('impresoras').addEventListener('input',e=>{const n=parseInt(e.target.value,10);if(n>0){impresoras=n;try{localStorage.setItem('things-impresoras',String(n));}catch(x){}renderCola3D();}});
-$('btnReset').addEventListener('click',()=>{try{localStorage.removeItem(KEY);}catch(e){}sel=null;form=null;filtroT='pendientes';filtroTaller='todos';filtroPersona='todas';busca='';$('buscaPed').value='';pedidos=generarBase();guardar();renderTodo();toast('Demo reiniciada');});
+document.querySelector('main').addEventListener('change',e=>{
+  const sel=e.target.closest('[data-cola]');if(sel&&sel.value){asignar(sel.dataset.cola,sel.value);return;}
+  const h=e.target.closest('[data-hechas]');if(h){const r=buscarPieza(h.dataset.hechas);if(r){r.z.hechas=Math.max(0,Math.min(r.z.cantidad,parseInt(h.value,10)||0));guardar();renderTodo();}}
+});
+$('btnReset').addEventListener('click',()=>{try{localStorage.removeItem(KEY);}catch(e){}sel=null;form=null;filtroT='pendientes';busca='';mant=[5];$('buscaPed').value='';pedidos=generarBase();guardar();renderTodo();toast('Demo reiniciada');});
 
 /* ---------- arranque ---------- */
 $('hoyChip').textContent='DATE: '+fPunto(hoy);

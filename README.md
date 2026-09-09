@@ -4,40 +4,39 @@ Prospecto abierto el 8-sep-2026 y confirmado en la junta del 9-sep-2026. La empr
 **THINGS** (`_thingsstudio`), de Marcela Telles González: diseñan y producen piezas
 extraordinarias para bares, cafés y restaurantes (mazapán gigante en 3D, hieleras con
 aditamento, veladoras serigrafiadas, sueros «vida oral», botas españolas, papelería, costales).
-Producen en un **solo taller** (varias personas, impresión 3D en Bambu Lab) que lleva la
-**encargada de diseño**; la ficha real dice «TALLER: 3D». Qué procesos además del 3D se hacen
-adentro y cuáles afuera: por confirmar. León, Gto. · WhatsApp 477 632 9263.
+Producen en un **solo taller de impresión 3D con seis Bambu Lab**; la ficha real dice
+«TALLER: 3D». Lo único que Marce quiere ver: qué está haciendo el taller y qué hace cada una
+de las seis impresoras. León, Gto. · WhatsApp 477 632 9263.
 
 **Lo que pidió Marce:** un programa para el taller donde ella levante pedidos con imagen,
 cantidad y descripción, y el taller sepa la fecha de entrega o de envío sin preguntar.
 
-**Pendiente de THINGS:** el Excel con productos, clientes y pedidos; nombres del equipo y
-cuántas impresoras Bambu Lab; qué procesos se hacen adentro y cuáles afuera; regla de
-numeración y cobro (anticipo); fotos de los productos que más repiten.
+**Pendiente de THINGS:** el Excel con productos, clientes y pedidos; horas de impresión de las
+piezas que más repiten; regla de numeración y cobro (anticipo); fotos de los productos.
 
 ## Qué hay aquí
 
 - `index.html` — la plataforma en un solo archivo con la identidad de THINGS (negro, verde
   neón `#D5FF34`, rojo `#FF0202`, bandas «>>><<<», caritas, estrellas; tipografías Archivo
   semicondensada e Inter Tight, las mismas familias de sus documentos). Lleva `noindex`.
-  - **Tablero del taller** (funciona): cada pieza como tarjeta con foto, cuántas, para quién,
-    y la fecha límite (entrega, o salida del envío si es fuera de ciudad). Contadores de
-    atrasadas, esta semana, en producción y listas. Filtros por proceso (3D · Bambu Lab,
-    serigrafía, DTF UV, impresión, papelería, textil, ensamble) y por persona del equipo
-    (nombres de prueba: Encargada de diseño, Ana, Sofi, Dani, Lu). El taller marca
-    iniciar → listo → entregado.
-  - **Cola de impresión 3D** (funciona): las piezas 3D pendientes en orden de fecha límite,
-    con horas por pieza × cantidad, acumulado, fecha estimada con N impresoras (ajustable, 20 h
-    útiles por día) y si alcanza o no.
+  - **Las seis impresoras** (funciona): una tarjeta por Bambu Lab con lo que imprime ahora
+    (pieza, cliente, hechas de cuántas, horas que faltan, cuándo termina y si alcanza la fecha
+    de entrega o de envío), lo que sigue en su cola, y botones de «lote terminado», «quitar» y
+    «mantenimiento». Lo que no alcanza se pinta de rojo. Contadores de atrasadas, esta semana,
+    impresoras trabajando y listas.
+  - **Cola de piezas** (funciona): lo pendiente sin impresora, en orden de fecha límite, con un
+    selector para mandarlo a la impresora que esté libre (o a la cola de una ocupada).
+  - **Todas las piezas** (funciona): tarjetas con foto, estado, hechas/faltan, fechas; filtros
+    pendientes / imprimiendo / listas / entregadas.
   - **Pedidos** (funciona): lista con avance por pedido, total con IVA, búsqueda. «Levantar
     pedido»: cliente, entrega, envío fuera de ciudad y piezas con foto (desde el celular abre la
-    cámara; se guarda reducida a 900 px), concepto, descripción, cantidad, precio, proceso,
-    asignar a alguien del equipo, horas de impresión si es 3D, material, medidas,
-    especificaciones y casillas color/luz/bengala/logos. Se pueden agregar
+    cámara; se guarda reducida a 900 px), concepto, cantidad, horas de impresión por pieza,
+    impresora (o a la cola), precio, productor responsable, material, medidas, especificaciones
+    y casillas color/luz/bengala/logos. Se pueden agregar
     piezas a un pedido existente.
   - **Ficha técnica** (funciona): réplica del formato de THINGS (`180825 MAZAPAN.pdf`),
-    generada desde la pieza; «productor responsable» es quien tiene asignada la pieza, o la
-    encargada de diseño. Botón de imprimir / guardar PDF.
+    generada desde la pieza, con «TALLER: 3D» y «productor responsable» como en su hoja.
+    Botón de imprimir / guardar PDF.
   - **Cotización** (funciona): réplica del formato 2026 (tabla, subtotal, IVA 16 %, total),
     generada desde el pedido.
   - **Propuesta**: lo que entendimos en la junta, lo que ya hace, lo que necesitamos, cómo
