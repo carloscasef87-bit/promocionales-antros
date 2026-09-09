@@ -10,6 +10,9 @@ de las seis impresoras. León, Gto. · WhatsApp 477 632 9263.
 
 **Lo que pidió Marce:** un programa para el taller donde ella levante pedidos con imagen,
 cantidad y descripción, y el taller sepa la fecha de entrega o de envío sin preguntar.
+**Herramientas que usa hoy:** Notion (operación) y Leadsales (CRM de WhatsApp). La plataforma
+convive con las dos: carga lo de Notion, importa clientes de Leadsales; conexión automática
+se cotiza aparte.
 
 **Pendiente de THINGS:** el Excel con productos, clientes y pedidos; horas de impresión de las
 piezas que más repiten; regla de numeración y cobro (anticipo); fotos de los productos.
