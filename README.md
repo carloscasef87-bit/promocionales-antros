@@ -1,57 +1,59 @@
-# Promocionales para antros — demo «Pedidos y Maquila»
+# THINGS · Taller — plataforma de pedidos y producción (versión 2)
 
-Prospecto abierto el 8-sep-2026. Marce Téllez comercializa promocionales para antros y bares
-(Windex y botes de Resistol con shots, cabezas de venado para presentar botellas, bengalas,
-letreros LED, gorras…). No fabrica: es intermediaria entre las maquilas y los antros. Llegó
-recomendada por IMSA. Cita el 9-sep-2026.
+Prospecto abierto el 8-sep-2026 y confirmado en la junta del 9-sep-2026. La empresa es
+**THINGS** (`_thingsstudio`), de Marcela Telles González: diseñan y producen piezas
+extraordinarias para bares, cafés y restaurantes (mazapán gigante en 3D, hieleras con
+aditamento, veladoras serigrafiadas, sueros «vida oral», botas españolas, papelería, costales).
+Tienen talleres propios (la ficha real dice «TALLER: 3D»). León, Gto. · WhatsApp 477 632 9263.
 
-**Qué usa hoy, cuántos pedidos mueve al mes, qué maquilas tiene y cómo cobra: pendiente.**
-Todo lo que hay en la demo son supuestos razonables sobre ese tipo de negocio; la cita sirve
-para confirmarlos o corregirlos.
+**Lo que pidió Marce:** un programa para el taller donde ella levante pedidos con imagen,
+cantidad y descripción, y el taller sepa la fecha de entrega o de envío sin preguntar.
+
+**Pendiente de THINGS:** el Excel con productos, clientes y pedidos; quién es quién en el
+taller; regla de numeración y cobro (anticipo); fotos de los productos que más repiten.
 
 ## Qué hay aquí
 
-- `index.html` — la demo completa en un solo archivo, página HTML completa. Se abre con doble
-  clic y se aloja en cualquier hosting estático (GitHub Pages, Netlify). Lleva `noindex` para que
-  Google no la indexe.
-  - **Funciona:** la pestaña «Pedidos, entregas y cobranza» (etapas 3, 4 y 5): lista de tareas
-    de hoy (pedidos en riesgo contra la fecha del evento, anticipos pendientes, entregas, saldos
-    vencidos, cotizaciones sin respuesta), cifras del mes, gráfica de seis meses, lista de
-    pedidos con filtros y búsqueda, detalle de cada pedido con dinero y bitácora, y las
-    acciones: registrar anticipo (manda la orden a maquila y calcula el compromiso), marcar listo,
-    registrar entrega con quién recibió, registrar pago, avisos por WhatsApp (simulados) y
-    retraso de maquila. Tabla de maquilas con su próximo compromiso.
-  - **Funciona:** el cotizador (etapa 2): producto, cantidad contra el mínimo de la maquila,
-    personalización, cliente (con envío por ciudad), fecha del evento y margen. Da precio,
-    anticipo, lo que se le paga a la maquila, lo que queda, y si llega antes del evento. Copia el
-    texto para WhatsApp y guarda el pedido como cotizado en el tablero.
-  - **Maquetas** («así se vería»): Ofrecer (catálogo con el logo del antro elegido) y Repetir
-    (calendario de temporadas con lo que cada antro pidió el año pasado y el límite para
-    ofrecer; historial por antro con «Volver a pedir», que sí crea la cotización).
-  - **Propuesta:** la presentación, primera pestaña: seis etapas (ofrecer, cotizar, producir,
-    entregar, cobrar, repetir), qué ganaría, cómo trabajaríamos y qué le pediríamos.
-- Los datos son inventados y se generan cada vez relativos a la fecha de hoy, así que la demo
-  nunca se ve vieja: la Noche mexicana del 15 de septiembre, Halloween y las demás temporadas
-  se calculan solas. Lo que la persona registra se guarda solo en su navegador; el botón
-  «Reiniciar demo» lo borra.
-- Antros, maquilas, contactos y precios son ficticios. Los tres antros que Carlos mencionó
-  (The Normal, La Sala de Despecho, Canta Corazón) no aparecen a propósito.
+- `index.html` — la plataforma en un solo archivo con la identidad de THINGS (negro, verde
+  neón `#D5FF34`, rojo `#FF0202`, bandas «>>><<<», caritas, estrellas; tipografías Archivo
+  semicondensada e Inter Tight, las mismas familias de sus documentos). Lleva `noindex`.
+  - **Tablero del taller** (funciona): cada pieza como tarjeta con foto, cuántas, para quién,
+    y la fecha límite (entrega, o salida del envío si es fuera de ciudad). Contadores de
+    atrasadas, esta semana, en producción y listas. Filtros por taller. El taller marca
+    iniciar → listo → entregado.
+  - **Pedidos** (funciona): lista con avance por pedido, total con IVA, búsqueda. «Levantar
+    pedido»: cliente, entrega, envío fuera de ciudad y piezas con foto (desde el celular abre la
+    cámara; se guarda reducida a 900 px), concepto, descripción, cantidad, precio, taller,
+    material, medidas, especificaciones y casillas color/luz/bengala/logos. Se pueden agregar
+    piezas a un pedido existente.
+  - **Ficha técnica** (funciona): réplica del formato de THINGS (`180825 MAZAPAN.pdf`),
+    generada desde la pieza. Botón de imprimir / guardar PDF.
+  - **Cotización** (funciona): réplica del formato 2026 (tabla, subtotal, IVA 16 %, total),
+    generada desde el pedido.
+  - **Propuesta**: lo que entendimos en la junta, lo que ya hace, lo que necesitamos, cómo
+    seguimos.
+- `img/` — logo de THINGS y sello «2026» extraídos de su cotización (PNG con transparencia),
+  y el render del mazapán extraído de la ficha.
+- Datos: clientes y pedidos de prueba, relativos a la fecha de hoy, salvo la ficha real del
+  mazapán de Marea Brava (18.08.2025). Los precios unitarios son los de su cotización de julio
+  2026. Lo que se captura se guarda solo en el navegador; «Reiniciar» lo borra.
+- La versión 1 (demo genérica «Pedidos y Maquila» para una intermediaria con maquilas
+  externas) quedó en el historial de git (commit `7e0a2a3`). Su premisa era parcialmente
+  incorrecta: THINGS produce en talleres propios.
 
-## Cómo probarla en la cita
+## Cómo enseñarla
 
-1. Abrir en «Pedidos»: la lista de hoy cuenta sola la historia (Bruma no llega al 15,
-   Vándalo con la maquila atrasada, Club Mónaco aprobado sin anticipo).
-2. Tocar un pedido, registrar el anticipo de Club Mónaco y ver cómo el sistema avisa que aun
-   así no alcanza.
-3. Ir a «Cotizar», poner cabezas de venado para un evento en 10 días: «No llega».
-4. Cerrar con «Propuesta».
+1. Abrir en «Tablero del taller»: dos piezas en rojo (Vándalo, ayer), lo que sale esta semana.
+2. «Ficha» del mazapán de La Roma Cantina: sale su formato con el render.
+3. «Pedidos» → Café Ámbar Querétaro → «Cotización»: su tabla con IVA.
+4. «+ Levantar pedido» desde el celular: foto con la cámara, guardar, y verlo aparecer en el tablero.
 
-## Cómo publicar sin que el link diga claude
+## Publicación
 
-Igual que la financiera: repo público `promocionales-antros` en la cuenta `carloscasef87-bit`,
-rama `main`, GitHub Pages sirviendo desde la raíz. URL:
-`https://carloscasef87-bit.github.io/promocionales-antros/`. Cada `git push` actualiza la
-demo en un minuto.
+Repo público `carloscasef87-bit/promocionales-antros`, GitHub Pages desde `main`:
+`https://carloscasef87-bit.github.io/promocionales-antros/`. Cada `git push` la actualiza.
+Cuando el trato avance: renombrar el repo (p. ej. `things-taller`) y poner acceso con contraseña;
+la URL de Pages cambia con el nombre del repo.
 
 ## Renglón para la cartera del central (`~/Desktop/fufo-os/clientes.json`)
 
@@ -59,17 +61,17 @@ Pegar dentro de `"clientes"` cuando nadie más esté editando ese repo:
 
 ```json
 {
-  "id": "promocionales-antros",
-  "nombre": "Marce Téllez — promocionales para antros (nombre comercial pendiente)",
+  "id": "things",
+  "nombre": "THINGS (_thingsstudio) — Marcela Telles",
   "lugar": "León, Gto.",
-  "relacion": "Prospecto desde 8-sep-2026, recomendado por IMSA. Cita el 9-sep-2026.",
-  "que_vende": "Promocionales con logo para antros y bares (Windex y Resistol con shots, cabezas de venado, bengalas, letreros LED). Intermediaria entre maquilas y antros.",
+  "relacion": "Prospecto desde 8-sep-2026, recomendado por IMSA. Junta 9-sep-2026: muy interesada en un sistema para el taller.",
+  "que_vende": "Diseño y producción de piezas promocionales y de ambientación para bares, cafés y restaurantes (3D, serigrafía, DTF UV, impresión, papelería, textil), con talleres propios.",
   "canales": [],
-  "cobro": {"modelo": "sin definir; se cotiza por módulo tras la visita", "recurrente": false, "nota": "Regla: no pagar infraestructura por alguien que aún no paga. La demo es un HTML sin servidor."},
-  "quiere": "Por confirmar en la cita: cómo lleva hoy los pedidos, cómo cotiza, cuántas maquilas y antros, cómo cobra (anticipo y saldo).",
-  "riesgo": "Negocio pequeño y de temporada: puede que el dolor real sea cobrar, no producir. Si ya usa un Excel que le funciona, la demo compite contra la costumbre.",
-  "desbloquea": "La cita del 9-sep y una lista real de productos con costo de maquila, mínimo y tiempos.",
-  "proyectos": ["promocionales-antros"]
+  "cobro": {"modelo": "sin definir; se cotiza por módulo cuando llegue el Excel", "recurrente": false, "nota": "Regla: no pagar infraestructura por alguien que aún no paga. Hoy es un HTML sin servidor."},
+  "quiere": "Levantar pedidos con imagen, cantidad y descripción; que el taller vea fecha de entrega y de envío; ficha técnica y cotización con su formato.",
+  "riesgo": "Falta ver el Excel: si su operación real es más simple o más caótica de lo que suponemos, el módulo cambia. Talleres y personas por confirmar.",
+  "desbloquea": "El Excel de productos, clientes y pedidos, y una lista de talleres con su responsable.",
+  "proyectos": ["things-taller"]
 }
 ```
 
@@ -77,10 +79,10 @@ Y dentro de `"proyectos"`:
 
 ```json
 {
-  "id": "promocionales-antros",
-  "cliente": "promocionales-antros",
-  "nombre": "Pedidos y Maquila (demo)",
-  "que_es": "Demo en un solo HTML: cotizador con margen y fecha de entrega, tablero de pedidos contra la fecha del evento, entregas y cobranza; catálogo y temporadas como maquetas",
+  "id": "things-taller",
+  "cliente": "things",
+  "nombre": "THINGS · Taller (prototipo)",
+  "que_es": "Prototipo en un solo HTML con la identidad de THINGS: tablero del taller por pieza con fechas límite, levantar pedidos con foto, ficha técnica y cotización imprimibles en su formato",
   "estado": "concepto",
   "carpeta_vault": null,
   "repo": "~/Desktop/promocionales-antros",
