@@ -27,6 +27,8 @@ piezas que más repiten; regla de numeración y cobro (anticipo); fotos de los p
     de entrega o de envío), lo que sigue en su cola, y botones de «lote terminado», «quitar» y
     «mantenimiento». Lo que no alcanza se pinta de rojo. Contadores de atrasadas, esta semana,
     impresoras trabajando y listas.
+  - **Filtro de pantalla** (funciona): «Todo», «Solo impresoras» (para la pantalla o tablet del
+    taller; el link con `#impresoras` abre directo ahí y se recuerda) y «Solo taller».
   - **Cola de piezas** (funciona): lo pendiente sin impresora, en orden de fecha límite, con un
     selector para mandarlo a la impresora que esté libre (o a la cola de una ocupada).
   - **Todas las piezas** (funciona): tarjetas con foto, estado, hechas/faltan, fechas; filtros

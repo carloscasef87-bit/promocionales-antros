@@ -152,6 +152,10 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .imp .imp-f{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1.5px solid var(--linea)}
 .imp .libre-msg{display:grid;justify-items:center;gap:6px;padding:14px 0;color:var(--ink2);font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
 .imp .libre-msg svg{width:40px;height:40px}
+.pantalla-impresoras .impresoras{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:18px}
+.pantalla-impresoras .imp .ahora h3{font-size:19px}
+.pantalla-impresoras .imp .termina,.pantalla-impresoras .imp .hechas,.pantalla-impresoras .imp .despues{font-size:14px}
+.pantalla-impresoras .imp .imp-h b{font-size:20px}
 .cola-sel{padding:5px 8px;border:1.5px solid var(--negro);border-radius:7px;font:inherit;font-size:13px;font-weight:700;background:var(--neon)}
 
 /* lista de pedidos */
@@ -347,22 +351,23 @@ td.r,th.r{text-align:right}
   <!-- ================= TABLERO DEL TALLER ================= -->
   <section class="view" id="view-taller">
     <div class="col">
+      <div class="filtros" id="pantallas"><span class="mini" style="margin-right:4px">Pantalla</span><button class="fchip" data-pantalla="todo">Todo</button><button class="fchip" data-pantalla="impresoras">Solo impresoras</button><button class="fchip" data-pantalla="taller">Solo taller</button><span class="tiny muted" id="pantallaNota" style="margin-left:auto"></span></div>
       <div class="cifras" id="cifras"></div>
-      <section class="caja">
+      <section class="caja" id="secImpresoras">
         <div class="caja-h">
           <div><span class="mini">Impresión 3D · Bambu Lab</span><h2>Las seis impresoras</h2></div>
           <span class="tiny muted" id="impResumen"></span>
         </div>
         <div class="impresoras" id="impresoras"></div>
       </section>
-      <section class="caja">
+      <section class="caja" id="secCola">
         <div class="caja-h">
           <div><span class="mini">Sin impresora todavía</span><h3>Cola de piezas</h3></div>
           <span class="tiny muted" id="colaResumen"></span>
         </div>
         <div class="tabla-wrap" id="cola"></div>
       </section>
-      <section class="caja">
+      <section class="caja" id="secPiezas">
         <div class="caja-h">
           <div><span class="mini">Todas las piezas</span><h3 id="tallerTitulo">Pendientes</h3></div>
           <span class="tiny muted" id="tallerResumen"></span>
@@ -419,7 +424,7 @@ td.r,th.r{text-align:right}
       <h2 style="margin-bottom:12px">Lo que ya hace esta versión</h2>
       <div class="bloques">
         <div class="bloque neon"><span class="n">01</span><h3>Levantar pedido</h3><p>Cliente, fecha de entrega, envío fuera de ciudad y cada pieza con foto (desde el celular), cantidad, descripción, horas de impresión, material, medidas y especificaciones. Las casillas de la ficha (color, luz, bengala, logos) van en el mismo paso. La pieza se manda a una impresora ahí mismo o se deja en la cola.</p><span class="tagf">Funciona</span></div>
-        <div class="bloque neon"><span class="n">02</span><h3>Las seis impresoras</h3><p>Qué está imprimiendo cada Bambu Lab: la pieza, para quién, cuántas van y cuántas faltan, cuándo termina y si alcanza la fecha de entrega o de envío. Lo que no alcanza se pinta de rojo. Abajo, la cola de lo que aún no tiene impresora, en orden de fecha límite, con un botón para mandarla a la que esté libre.</p><span class="tagf">Funciona</span></div>
+        <div class="bloque neon"><span class="n">02</span><h3>Las seis impresoras</h3><p>Qué está imprimiendo cada Bambu Lab: la pieza, para quién, cuántas van y cuántas faltan, cuándo termina y si alcanza la fecha de entrega o de envío. Lo que no alcanza se pinta de rojo. Abajo, la cola de lo que aún no tiene impresora, en orden de fecha límite, con un botón para mandarla a la que esté libre. Un filtro deja la pantalla del taller solo con las impresoras, y la de Marce con todo.</p><span class="tagf">Funciona</span></div>
         <div class="bloque neon"><span class="n">03</span><h3>Ficha técnica</h3><p>La hoja que hoy arman a mano, generada desde el pedido: número, cliente, producto, taller, fecha de entrega, material, piezas, medidas, especificaciones, imagen y casillas. Se imprime o se guarda en PDF.</p><span class="tagf">Funciona</span></div>
         <div class="bloque neon"><span class="n">04</span><h3>Cotización</h3><p>La tabla de cantidad, concepto, descripción, precio unitario y total, con subtotal, IVA y total, en el formato de THINGS 2026. Sale del mismo pedido.</p><span class="tagf">Funciona</span></div>
         <div class="bloque"><span class="n">05</span><h3>Con sus datos reales</h3><p>Lo que hoy tienen en Notion (productos, clientes, pedidos) se carga aquí y la plataforma arranca con su historia completa, no vacía. Los clientes de Leadsales entran por exportación. Si conviene, los pedidos que capturen en Notion pueden aparecer solos en el tablero.</p><span class="tagf">Siguiente paso</span></div>
@@ -590,6 +595,10 @@ const activa=n=>deImpresora(n).find(x=>x.z.estado==='produccion')||null;
 /* ---------- estado y almacenamiento ---------- */
 const KEY='things-taller-v1';
 let pedidos,mant=[5],sel=null,filtroT='pendientes',busca='',hoja=null,form=null;
+/* pantalla del tablero: todo, solo impresoras (para la pantalla del taller) o solo taller. Se guarda y va en el link (#impresoras / #taller) */
+let pantalla='todo';
+try{pantalla=localStorage.getItem('things-pantalla')||'todo';}catch(e){}
+if(['#impresoras','#taller','#todo'].includes(location.hash))pantalla=location.hash.slice(1);
 function cargar(){
   try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.dia===iso(hoy)&&Array.isArray(s.pedidos)&&s.pedidos.length){pedidos=s.pedidos;mant=Array.isArray(s.mant)?s.mant:[];return;}}catch(e){}
   pedidos=generarBase();mant=[5];guardar();
@@ -689,7 +698,15 @@ function renderTarjetas(){
       '<div class="cuerpo"><div><span class="estado '+e.cls+'">'+esc(e.txt)+'</span></div><h3>'+esc(z.concepto)+'</h3>'+(z.descripcion?'<p class="desc">'+esc(z.descripcion)+'</p>':'')+avance+'<div class="cli">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' <span class="muted tiny">· '+esc(p.no)+'</span></div><div class="fechas">'+fechas+'</div><div class="acts">'+acts+'</div></div></article>';
   }).join(''):'<p class="muted" style="padding:10px 0">No hay piezas con ese filtro.</p>';
 }
-function renderTaller(){renderCifras();renderImpresoras();renderCola();renderTarjetas();}
+function renderPantalla(){
+  document.querySelectorAll('#pantallas [data-pantalla]').forEach(b=>b.classList.toggle('on',b.dataset.pantalla===pantalla));
+  $('secImpresoras').hidden=pantalla==='taller';
+  $('secCola').hidden=pantalla==='impresoras';
+  $('secPiezas').hidden=pantalla==='impresoras';
+  $('view-taller').classList.toggle('pantalla-impresoras',pantalla==='impresoras');
+  $('pantallaNota').textContent=pantalla==='impresoras'?'Para la pantalla del taller. Abre el link con #impresoras y arranca aquí.':pantalla==='taller'?'Cola y piezas, sin las impresoras.':'';
+}
+function renderTaller(){renderPantalla();renderCifras();renderImpresoras();renderCola();renderTarjetas();}
 /* acciones del taller */
 function asignar(zid,n){
   const r=buscarPieza(zid);if(!r)return;n=parseInt(n,10);if(!(n>0))return;
@@ -906,7 +923,8 @@ function mostrar(v){
 function renderTodo(){renderTaller();renderPedidos();renderPanel();}
 $('tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(t){form=null;mostrar(t.dataset.view);renderPanel();}});
 document.querySelector('main').addEventListener('click',e=>{
-  const b=e.target.closest('[data-act],[data-ft]');if(!b)return;
+  const b=e.target.closest('[data-act],[data-ft],[data-pantalla]');if(!b)return;
+  if(b.dataset.pantalla){pantalla=b.dataset.pantalla;try{localStorage.setItem('things-pantalla',pantalla);}catch(x){}history.replaceState(null,'','#'+pantalla);renderTaller();return;}
   if(b.dataset.ft){filtroT=b.dataset.ft;renderTaller();return;}
   const act=b.dataset.act;
   if(act==='lote'){lote(b.dataset.z);return;}
