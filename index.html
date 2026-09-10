@@ -116,7 +116,8 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .tarjeta .fechas{display:grid;gap:3px;font-size:12.5px}
 .tarjeta .fechas .cuando{color:var(--ink2)}
 .tarjeta .fechas .cuando.mal{color:var(--rojo);font-weight:700}
-.tarjeta .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.tarjeta .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;min-width:0}
+.tarjeta .acts .cola-sel{flex:1 1 100%}
 .estado{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:999px;border:1.5px solid var(--negro);background:var(--papel);white-space:nowrap}
 .estado.produccion{background:var(--neon)}
 .estado.listo{background:var(--negro);color:#fff}
@@ -126,8 +127,9 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .tag.neon{background:var(--neon);color:var(--negro)}
 
 /* impresoras */
-.impresoras{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.imp{border:1.5px solid var(--negro);border-radius:12px;background:var(--papel);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+.impresoras{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.imp{border:1.5px solid var(--negro);border-radius:12px;background:var(--papel);display:grid;grid-template-rows:auto 1fr auto auto;overflow:hidden;min-width:0}
+.imp>*{min-width:0}
 .imp.mal{border-color:var(--rojo);box-shadow:0 0 0 3px rgba(255,2,2,.18)}
 .imp .imp-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-bottom:1.5px solid var(--negro);background:var(--gris)}
 .imp .imp-h b{font-family:var(--disp);font-stretch:87.5%;font-weight:800;text-transform:uppercase;font-size:17px}
@@ -149,14 +151,30 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .imp .termina.mal{color:var(--rojo);font-weight:700}
 .imp .despues{font-size:12.5px;color:var(--ink2);border-top:1px dashed var(--linea);padding-top:8px}
 .imp .despues b{color:var(--ink)}
-.imp .imp-f{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1.5px solid var(--linea)}
+.imp .imp-f{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1.5px solid var(--linea);min-width:0}
+.imp .imp-f .btn{flex:0 1 auto;min-width:0}
+.imp .cola{border-top:1.5px dashed var(--negro);padding:10px 12px;display:grid;gap:7px;background:var(--crema)}
+.imp .cola .tit{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.imp .cola .tit span{font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink2);font-size:12px}
+.imp .cola ol{margin:0;padding:0;list-style:none;display:grid;gap:6px;counter-reset:c}
+.imp .cola li{display:grid;grid-template-columns:20px minmax(0,1fr) auto auto;gap:8px;align-items:start;font-size:12.5px;counter-increment:c}
+.imp .cola li>div{min-width:0}
+.imp .cola li b,.imp .cola li .quien{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.imp .cola li::before{content:counter(c);font-family:var(--disp);font-weight:800;font-size:13px;background:var(--papel);border:1.5px solid var(--negro);border-radius:5px;width:20px;height:20px;display:grid;place-items:center}
+.imp .cola li b{display:block;font-weight:700}
+.imp .cola li .quien{color:var(--ink2)}
+.imp .cola li .der{text-align:right;white-space:nowrap;display:grid;gap:2px;justify-items:end}
+.imp .cola li .x{color:var(--ink3);font-size:16px;line-height:1;cursor:pointer;padding:0 2px;align-self:center}
+.imp .cola li .x:hover{color:var(--bad,var(--rojo))}
+.imp .cola .agregar{display:grid;gap:4px}
+.imp .cola .vacia{color:var(--ink2);font-size:12.5px}
 .imp .libre-msg{display:grid;justify-items:center;gap:6px;padding:14px 0;color:var(--ink2);font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
 .imp .libre-msg svg{width:40px;height:40px}
 .pantalla-impresoras .impresoras{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
 .pantalla-impresoras .imp .ahora h3{font-size:19px}
 .pantalla-impresoras .imp .termina,.pantalla-impresoras .imp .hechas,.pantalla-impresoras .imp .despues{font-size:14px}
 .pantalla-impresoras .imp .imp-h b{font-size:20px}
-.cola-sel{padding:5px 8px;border:1.5px solid var(--negro);border-radius:7px;font:inherit;font-size:13px;font-weight:700;background:var(--neon)}
+.cola-sel{padding:5px 8px;border:1.5px solid var(--negro);border-radius:7px;font:inherit;font-size:13px;font-weight:700;background:var(--neon);width:100%;min-width:0;max-width:100%;text-overflow:ellipsis}
 
 /* lista de pedidos */
 .fila{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;padding:12px 4px;border-top:1.5px solid var(--linea);width:100%;text-align:left}
@@ -360,13 +378,6 @@ td.r,th.r{text-align:right}
         </div>
         <div class="impresoras" id="impresoras"></div>
       </section>
-      <section class="caja" id="secCola">
-        <div class="caja-h">
-          <div><span class="mini">Sin impresora todavía</span><h3>Cola de piezas</h3></div>
-          <span class="tiny muted" id="colaResumen"></span>
-        </div>
-        <div class="tabla-wrap" id="cola"></div>
-      </section>
       <section class="caja" id="secPiezas">
         <div class="caja-h">
           <div><span class="mini">Todas las piezas</span><h3 id="tallerTitulo">Pendientes</h3></div>
@@ -424,7 +435,7 @@ td.r,th.r{text-align:right}
       <h2 style="margin-bottom:12px">1 · El sistema</h2>
       <div class="bloques">
         <div class="bloque neon"><span class="n">01</span><h3>Pedidos completos desde el celular</h3><p>Cada pieza se captura con su foto, cantidad, descripción, horas de impresión, material, medidas, especificaciones y las casillas de la ficha. Todo en un solo paso y sin papel. Desde ahí mismo se asigna a una impresora o se deja en la cola.</p></div>
-        <div class="bloque neon"><span class="n">02</span><h3>El taller siempre sabe qué sigue</h3><p>Cada una de las seis impresoras muestra qué está imprimiendo, para qué cliente, cuántas piezas faltan y cuándo termina. Lo que no alcanza la fecha se marca en rojo con anticipación, cuando todavía hay tiempo de mover piezas entre impresoras.</p></div>
+        <div class="bloque neon"><span class="n">02</span><h3>El taller siempre sabe qué sigue</h3><p>Cada una de las seis impresoras muestra qué está imprimiendo, para qué cliente, cuántas piezas faltan y cuándo termina, y debajo su propia cola con lo que sigue y la fecha estimada de cada trabajo. Lo que no alcanza la fecha se marca en rojo con anticipación, cuando todavía hay tiempo de mover piezas entre impresoras.</p></div>
         <div class="bloque neon"><span class="n">03</span><h3>Fechas de entrega y de envío a la vista</h3><p>Cada pieza conoce su fecha límite. Si el pedido es fuera de la ciudad, el sistema trabaja con la fecha en que debe salir el envío, no con la de entrega. Nadie tiene que preguntar para cuándo es.</p></div>
         <div class="bloque neon"><span class="n">04</span><h3>Ficha técnica y cotización en un clic</h3><p>Las dos hojas que hoy se arman a mano salen del mismo pedido, con el formato de THINGS, listas para imprimir o enviar en PDF. Número de pedido, IVA y totales se calculan solos.</p></div>
         <div class="bloque"><span class="n">05</span><h3>Convive con Notion y Leadsales</h3><p>Los clientes siguen llegando por Leadsales y la información que ya existe en Notion se carga en el sistema. Nada se captura dos veces y nadie tiene que cambiar su forma de trabajar de un día para otro.</p></div>
@@ -662,29 +673,24 @@ function renderImpresoras(){
     }else if(enMant){
       cuerpo='<div class="libre-msg">'+ICO.alert+'<span>En mantenimiento</span></div>';
     }else{
-      cuerpo='<div class="libre-msg">'+ICO.cara+'<span>Libre · manda una pieza desde la cola</span></div>';
+      cuerpo='<div class="libre-msg">'+ICO.cara+'<span>'+(despues.length?'Libre · lista para empezar':'Libre · agrega una pieza abajo')+'</span></div>';
     }
-    if(despues.length){
-      let acum=ah?(horasRestantes(ah.z)||0):0;
-      cuerpo+='<div class="despues">Después: '+despues.map(({p,z})=>{const h=horasRestantes(z);acum+=h||0;const t=terminaEn(acum);const malQ=t>limite(p);return '<b>'+z.cantidad+' '+esc(z.concepto)+'</b> ('+esc(p.empresa)+(h!=null?', '+h.toLocaleString('es-MX')+' h':'')+') · termina ≈ '+fDia(t)+(malQ?' <span class="hl rojo">no alcanza</span>':'');}).join(' · ')+'</div>';
-    }
+    // cola de esta impresora
+    let acum=ah?(horasRestantes(ah.z)||0):0;
+    const filas=despues.map(({p,z})=>{
+      const h=horasRestantes(z);acum+=h||0;const t=terminaEn(acum);const malQ=t>limite(p);
+      return '<li><div><b>'+z.cantidad+' × '+esc(z.concepto)+'</b><span class="quien">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+'</span></div><div class="der"><span>'+(h!=null?h.toLocaleString('es-MX')+' h':'sin horas')+'</span><span class="'+(malQ?'hl rojo':'muted')+'">'+(malQ?'no alcanza':'≈ '+fDia(t))+'</span></div><button class="x" data-act="sacar" data-z="'+z.id+'" title="Sacar de la cola" aria-label="Sacar de la cola">×</button></li>';
+    }).join('');
+    const sinImp=piezasCon((p,z)=>z.estado==='por_iniciar'&&!z.impresora).sort((a,b)=>limite(a.p)-limite(b.p));
+    const agregar=enMant?'':'<div class="agregar"><select class="cola-sel" data-cola-imp="'+i.n+'"><option value="">+ Agregar pieza…</option>'+sinImp.map(({p,z})=>'<option value="'+z.id+'">'+esc(z.cantidad+' × '+z.concepto)+' · '+esc(p.empresa)+' · '+(p.fuera?'sale ':'entrega ')+fDia(limite(p))+'</option>').join('')+'</select>'+(sinImp.length?'<span class="tiny muted">'+plural(sinImp.length,'pieza','piezas')+' sin impresora</span>':'<span class="tiny muted">nada pendiente por asignar</span>')+'</div>';
+    const cola='<div class="cola"><div class="tit">En cola'+(despues.length?' · '+despues.length:'')+(despues.length?'<span>termina ≈ '+fDia(terminaEn(acum))+'</span>':'')+'</div>'+(filas?'<ol>'+filas+'</ol>':'<p class="vacia">Sin piezas en cola.</p>')+agregar+'</div>';
     let pie='';
     if(ah)pie+='<button class="btn small negro" data-act="lote" data-z="'+ah.z.id+'">Lote terminado</button><button class="btn small ghost" data-act="quitar-imp" data-z="'+ah.z.id+'">Quitar</button>';
-    else if(!enMant&&despues.length)pie+='<button class="btn small neon" data-act="empezar" data-z="'+despues[0].z.id+'">Empezar: '+esc(despues[0].z.concepto)+'</button>';
+    else if(!enMant&&despues.length)pie+='<button class="btn small neon" data-act="empezar" data-z="'+despues[0].z.id+'">Empezar el siguiente</button>';
     pie+='<button class="btn small'+(enMant?' rojo':' ghost')+'" data-act="mant" data-n="'+i.n+'">'+(enMant?'Volver a usar':'Mantenimiento')+'</button>';
-    return '<article class="'+cls+(mal?' mal':'')+'"><div class="imp-h"><div><b>'+esc(i.nombre)+'</b><small>Bambu Lab</small></div><span class="estado '+(enMant?'atrasado':ah?'produccion':'')+'">'+(enMant?'Mantenimiento':ah?'Imprimiendo':'Libre')+'</span></div><div class="imp-b">'+cuerpo+'</div><div class="imp-f">'+pie+'</div></article>';
+    return '<article class="'+cls+(mal?' mal':'')+'"><div class="imp-h"><div><b>'+esc(i.nombre)+'</b><small>Bambu Lab</small></div><span class="estado '+(enMant?'atrasado':ah?'produccion':'')+'">'+(enMant?'Mantenimiento':ah?'Imprimiendo':'Libre')+'</span></div><div class="imp-b">'+cuerpo+'</div>'+cola+'<div class="imp-f">'+pie+'</div></article>';
   }).join('');
   $('impResumen').textContent=ocupadas+' imprimiendo · '+(N_IMPRESORAS-ocupadas-mantN)+' libres'+(mantN?' · '+mantN+' en mantenimiento':'');
-}
-function renderCola(){
-  const cola=piezasCon((p,z)=>z.estado==='por_iniciar'&&!z.impresora).sort((a,b)=>limite(a.p)-limite(b.p));
-  $('colaResumen').textContent=plural(cola.length,'pieza','piezas')+' · '+cola.reduce((s,x)=>s+(horasRestantes(x.z)||0),0).toLocaleString('es-MX')+' h de impresión';
-  if(!cola.length){$('cola').innerHTML='<p class="muted">Todo lo pendiente ya tiene impresora.</p>';return;}
-  const opciones=IMPRESORAS.map(i=>{const enMant=mant.includes(i.n);const ah=activa(i.n);const q=deImpresora(i.n);let txt=i.nombre+(enMant?' · mantenimiento':ah?' · ocupada, '+plural(q.length,'pieza','piezas')+' antes':' · libre');return '<option value="'+i.n+'"'+(enMant?' disabled':'')+'>'+esc(txt)+'</option>';}).join('');
-  $('cola').innerHTML='<table><thead><tr><th>Pieza</th><th>Cant.</th><th class="r">Horas</th><th>Límite</th><th>Mandar a</th></tr></thead><tbody>'+cola.map(({p,z})=>{
-    const lim=limite(p);const urg=dias(lim,hoy)<=3;const h=horasRestantes(z);
-    return '<tr><td><b>'+esc(z.concepto)+'</b><br><span class="tiny muted">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' · '+esc(p.no)+'</span></td><td class="num">'+z.cantidad+(z.horas?' × '+z.horas+' h':'')+'</td><td class="r num">'+(h==null?'<span class="hl rojo">sin horas</span>':h.toLocaleString('es-MX')+' h')+'</td><td><span class="'+(lim<hoy?'hl rojo':urg?'hl':'')+'">'+(p.fuera?'sale ':'entrega ')+fDia(lim)+'</span><br><span class="tiny muted">'+relativo(lim)+'</span></td><td><select class="cola-sel" data-cola="'+z.id+'"><option value="">Elegir…</option>'+opciones+'</select></td></tr>';
-  }).join('')+'</tbody></table><p class="tiny muted" style="margin-top:8px">En orden de fecha límite. Si una pieza va a repartirse entre varias impresoras, captúrala como dos renglones.</p>';
 }
 function renderTarjetas(){
   $('tallerTitulo').textContent={pendientes:'Pendientes',atrasados:'Atrasadas',semana:'Salen esta semana',produccion:'Imprimiendo',listos:'Listas para entregar',entregadas:'Entregadas',todas:'Todas las piezas'}[filtroT];
@@ -699,6 +705,7 @@ function renderTarjetas(){
     if(p.fuera&&p.envio){fechas='<span><span class="hl'+(e.mal?' rojo':'')+'">SALE: '+fDia(deIso(p.envio)).toUpperCase()+'</span></span><span class="cuando'+(e.mal?' mal':'')+'">envío a '+esc(p.ciudad)+' · entrega '+fDia(ent)+' · '+(z.estado==='entregado'?'entregado':relativo(lim))+'</span>';}
     else{fechas='<span><span class="hl'+(e.mal?' rojo':'')+'">ENTREGA: '+fDia(ent).toUpperCase()+'</span></span><span class="cuando'+(e.mal?' mal':'')+'">'+(z.estado==='entregado'?'entregado':relativo(ent))+'</span>';}
     let acts='';
+    if(z.estado==='por_iniciar'&&!z.impresora)acts+='<select class="cola-sel" data-cola-pieza="'+z.id+'"><option value="">Mandar a…</option>'+IMPRESORAS.map(x=>{const m=mant.includes(x.n);const a=activa(x.n);return '<option value="'+x.n+'"'+(m?' disabled':'')+'>'+esc(x.nombre)+(m?' · mantenimiento':a?' · ocupada':' · libre')+'</option>';}).join('')+'</select>';
     if(z.estado==='produccion')acts+='<button class="btn small negro" data-act="lote" data-z="'+z.id+'">Lote terminado</button>';
     if(z.estado==='listo')acts+='<button class="btn small negro" data-act="estado" data-z="'+z.id+'" data-e="entregado">Entregado</button>';
     if(z.estado==='entregado')acts+='<button class="btn small ghost" data-act="estado" data-z="'+z.id+'" data-e="listo">Regresar a listo</button>';
@@ -711,12 +718,11 @@ function renderTarjetas(){
 function renderPantalla(){
   document.querySelectorAll('#pantallas [data-pantalla]').forEach(b=>b.classList.toggle('on',b.dataset.pantalla===pantalla));
   $('secImpresoras').hidden=pantalla==='taller';
-  $('secCola').hidden=pantalla==='impresoras';
   $('secPiezas').hidden=pantalla==='impresoras';
   $('view-taller').classList.toggle('pantalla-impresoras',pantalla==='impresoras');
-  $('pantallaNota').textContent=pantalla==='impresoras'?'Pantalla del taller. El enlace con #impresoras abre directamente aquí.':pantalla==='taller'?'Cola y piezas, sin las impresoras.':'';
+  $('pantallaNota').textContent=pantalla==='impresoras'?'Pantalla del taller. El enlace con #impresoras abre directamente aquí.':pantalla==='taller'?'Solo las piezas, sin las impresoras.':'';
 }
-function renderTaller(){renderPantalla();renderCifras();renderImpresoras();renderCola();renderTarjetas();}
+function renderTaller(){renderPantalla();renderCifras();renderImpresoras();renderTarjetas();}
 /* acciones del taller */
 function asignar(zid,n){
   const r=buscarPieza(zid);if(!r)return;n=parseInt(n,10);if(!(n>0))return;
@@ -939,6 +945,7 @@ document.querySelector('main').addEventListener('click',e=>{
   const act=b.dataset.act;
   if(act==='lote'){lote(b.dataset.z);return;}
   if(act==='empezar'){const r=buscarPieza(b.dataset.z);if(r){r.z.estado='produccion';guardar();renderTodo();toast(r.z.concepto+': imprimiendo en la impresora '+r.z.impresora);}return;}
+  if(act==='sacar'){const r=buscarPieza(b.dataset.z);if(r){const n=r.z.impresora;r.z.impresora=null;guardar();renderTodo();toast(r.z.concepto+': fuera de la cola de la impresora '+n);}return;}
   if(act==='quitar-imp'){const r=buscarPieza(b.dataset.z);if(r){const n=r.z.impresora;r.z.impresora=null;r.z.estado='por_iniciar';guardar();renderTodo();toast(r.z.concepto+': regresó a la cola; la impresora '+n+' queda libre');}return;}
   if(act==='mant'){const n=+b.dataset.n;if(mant.includes(n)){mant=mant.filter(x=>x!==n);toast('Impresora '+n+' de vuelta');}else{mant.push(n);const ah=activa(n);if(ah){ah.z.estado='por_iniciar';}toast('Impresora '+n+' en mantenimiento'+(ah?'; '+ah.z.concepto+' queda en pausa':''),'alert');}guardar();renderTodo();return;}
   if(act==='estado'){const r=buscarPieza(b.dataset.z);if(!r)return;r.z.estado=b.dataset.e;guardar();renderTodo();toast(r.z.concepto+': '+ESTADOS[b.dataset.e].txt.toLowerCase());return;}
@@ -957,7 +964,8 @@ document.querySelector('main').addEventListener('click',e=>{
 });
 $('buscaPed').addEventListener('input',e=>{busca=e.target.value;renderPedidos();});
 document.querySelector('main').addEventListener('change',e=>{
-  const sel=e.target.closest('[data-cola]');if(sel&&sel.value){asignar(sel.dataset.cola,sel.value);return;}
+  const sel=e.target.closest('[data-cola-imp]');if(sel&&sel.value){asignar(sel.value,sel.dataset.colaImp);return;}
+  const sp=e.target.closest('[data-cola-pieza]');if(sp&&sp.value){asignar(sp.dataset.colaPieza,sp.value);return;}
   const h=e.target.closest('[data-hechas]');if(h){const r=buscarPieza(h.dataset.hechas);if(r){r.z.hechas=Math.max(0,Math.min(r.z.cantidad,parseInt(h.value,10)||0));guardar();renderTodo();}}
 });
 $('btnReset').addEventListener('click',()=>{try{localStorage.removeItem(KEY);}catch(e){}sel=null;form=null;filtroT='pendientes';busca='';mant=[5];$('buscaPed').value='';pedidos=generarBase();guardar();renderTodo();toast('Demo reiniciada');});
