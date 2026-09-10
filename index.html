@@ -958,6 +958,8 @@ $('btnReset').addEventListener('click',()=>{try{localStorage.removeItem(KEY);}ca
 $('hoyChip').textContent='DATE: '+fPunto(hoy);
 cargar();
 renderTodo();
+/* el enlace puede abrir directo en una pestaña: #propuesta o #pedidos */
+if(location.hash==='#propuesta'||location.hash==='#pedidos')mostrar(location.hash.slice(1));
 })();
 </script>
 </body>
