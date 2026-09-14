@@ -126,6 +126,38 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .tag{display:inline-flex;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:5px;background:var(--negro);color:#fff}
 .tag.neon{background:var(--neon);color:var(--negro)}
 
+/* lista de producción */
+.trabajo{display:grid;grid-template-columns:64px minmax(0,1fr) 190px 210px;gap:14px;align-items:start;padding:12px 4px;border-top:1.5px solid var(--linea)}
+.trabajo:first-child{border-top:0}
+.trabajo:hover{background:var(--neon-soft)}
+.trabajo.atrasada{background:rgba(255,2,2,.05)}
+.trabajo .th{width:64px;height:52px;border:1.5px solid var(--negro);border-radius:7px;overflow:hidden;background:var(--neon-soft);display:grid;place-items:center}
+.trabajo .th img{width:100%;height:100%;object-fit:cover}
+.trabajo .th svg{width:26px;height:26px}
+.trabajo .qué{min-width:0;display:grid;gap:3px}
+.trabajo .qué b{font-family:var(--disp);font-stretch:87.5%;font-weight:800;text-transform:uppercase;font-size:17px;line-height:1.1}
+.trabajo .qué .cli{font-size:12.5px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trabajo .qué .marcas{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
+.trabajo .nota{width:100%;padding:4px 8px;border:1.5px dashed var(--line,var(--linea));border-radius:6px;font:inherit;font-size:12.5px;background:transparent;margin-top:3px}
+.trabajo .nota:focus{background:var(--papel);border-style:solid;border-color:var(--negro)}
+.trabajo .cuando{display:grid;gap:2px;font-size:12.5px}
+.trabajo .cuando .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--ink2)}
+.trabajo .cuando .f{font-family:var(--disp);font-stretch:87.5%;font-weight:800;text-transform:uppercase;font-size:16px;line-height:1.1}
+.trabajo .cuando .sub{color:var(--ink2)}
+.trabajo .cuando .sub.mal{color:var(--rojo);font-weight:700}
+.trabajo .acciones-p{display:grid;gap:6px;justify-items:stretch}
+.trabajo .est-sel{width:100%;padding:7px 9px;border:1.5px solid var(--negro);border-radius:8px;font:inherit;font-size:13px;font-weight:700;background:var(--papel)}
+.trabajo .est-sel.por_iniciar{background:var(--papel)}
+.trabajo .est-sel.produccion{background:var(--neon)}
+.trabajo .est-sel.listo{background:var(--negro);color:#fff}
+.trabajo .est-sel.entregado{background:var(--gris);color:var(--ink2)}
+.trabajo .fila-b{display:flex;gap:6px;flex-wrap:wrap}
+@media (max-width:900px){
+  .trabajo{grid-template-columns:56px minmax(0,1fr);gap:10px}
+  .trabajo .cuando,.trabajo .acciones-p{grid-column:2}
+  .trabajo .cuando{border-top:1px dashed var(--linea);padding-top:7px;margin-top:2px}
+}
+
 /* impresoras */
 .impresoras{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .imp{border:1.5px solid var(--negro);border-radius:12px;background:var(--papel);display:grid;grid-template-rows:auto 1fr auto auto;overflow:hidden;min-width:0}
@@ -170,10 +202,10 @@ main{padding:18px;max-width:1360px;width:100%;margin:0 auto;min-height:60vh}
 .imp .cola .vacia{color:var(--ink2);font-size:12.5px}
 .imp .libre-msg{display:grid;justify-items:center;gap:6px;padding:14px 0;color:var(--ink2);font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
 .imp .libre-msg svg{width:40px;height:40px}
-.pantalla-impresoras .impresoras{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
-.pantalla-impresoras .imp .ahora h3{font-size:19px}
-.pantalla-impresoras .imp .termina,.pantalla-impresoras .imp .hechas,.pantalla-impresoras .imp .despues{font-size:14px}
-.pantalla-impresoras .imp .imp-h b{font-size:20px}
+#view-impresoras .impresoras{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+#view-impresoras .imp .ahora h3{font-size:19px}
+#view-impresoras .imp .termina,#view-impresoras .imp .hechas{font-size:14px}
+#view-impresoras .imp .imp-h b{font-size:20px}
 .cola-sel{padding:5px 8px;border:1.5px solid var(--negro);border-radius:7px;font:inherit;font-size:13px;font-weight:700;background:var(--neon);width:100%;min-width:0;max-width:100%;text-overflow:ellipsis}
 
 /* lista de pedidos */
@@ -360,31 +392,38 @@ td.r,th.r{text-align:right}
   </div>
 </header>
 <nav class="tabs" id="tabs" role="tablist">
-  <button class="tab active" data-view="taller" role="tab">Tablero del taller <small>lo que ve el taller</small></button>
-  <button class="tab" data-view="pedidos" role="tab">Pedidos <small>oficina</small></button>
+  <button class="tab active" data-view="produccion" role="tab">Producción <small>taller</small></button>
+  <button class="tab" data-view="impresoras" role="tab">Impresoras <small>3D · Bambu Lab</small></button>
+  <button class="tab" data-view="pedidos" role="tab">Pedidos <small>dirección</small></button>
   <button class="tab" data-view="propuesta" role="tab">Propuesta <small>sistema · capacitación · acompañamiento</small></button>
 </nav>
 
 <main>
-  <!-- ================= TABLERO DEL TALLER ================= -->
-  <section class="view" id="view-taller">
+  <!-- ================= PRODUCCIÓN (taller) ================= -->
+  <section class="view" id="view-produccion">
     <div class="col">
-      <div class="filtros" id="pantallas"><span class="mini" style="margin-right:4px">Pantalla</span><button class="fchip" data-pantalla="todo">Todo</button><button class="fchip" data-pantalla="impresoras">Solo impresoras</button><button class="fchip" data-pantalla="taller">Solo taller</button><span class="tiny muted" id="pantallaNota" style="margin-left:auto"></span></div>
-      <div class="cifras" id="cifras"></div>
-      <section class="caja" id="secImpresoras">
+      <div class="cifras" id="cifrasProd"></div>
+      <section class="caja">
+        <div class="caja-h">
+          <div><span class="mini">Lo que hay que trabajar</span><h2 id="prodTitulo">Pendientes</h2></div>
+          <span class="tiny muted" id="prodResumen"></span>
+        </div>
+        <div class="filtros" id="filtrosProd" style="margin-bottom:14px"></div>
+        <div id="listaProd"></div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ================= IMPRESORAS (3D) ================= -->
+  <section class="view" id="view-impresoras" hidden>
+    <div class="col">
+      <div class="cifras" id="cifrasImp"></div>
+      <section class="caja">
         <div class="caja-h">
           <div><span class="mini">Impresión 3D · Bambu Lab</span><h2>Las seis impresoras</h2></div>
           <span class="tiny muted" id="impResumen"></span>
         </div>
         <div class="impresoras" id="impresoras"></div>
-      </section>
-      <section class="caja" id="secPiezas">
-        <div class="caja-h">
-          <div><span class="mini">Todas las piezas</span><h3 id="tallerTitulo">Pendientes</h3></div>
-          <span class="tiny muted" id="tallerResumen"></span>
-        </div>
-        <div class="filtros" id="filtrosTaller" style="margin-bottom:14px"></div>
-        <div class="tarjetas" id="tarjetas"></div>
       </section>
     </div>
   </section>
@@ -435,11 +474,12 @@ td.r,th.r{text-align:right}
       <h2 style="margin-bottom:12px">1 · El sistema</h2>
       <div class="bloques">
         <div class="bloque neon"><span class="n">01</span><h3>Pedidos completos desde el celular</h3><p>Cada pieza se captura con su foto, cantidad, descripción, horas de impresión, material, medidas, especificaciones y las casillas de la ficha. Todo en un solo paso y sin papel. Desde ahí mismo se asigna a una impresora o se deja en la cola.</p></div>
-        <div class="bloque neon"><span class="n">02</span><h3>El taller siempre sabe qué sigue</h3><p>Cada una de las seis impresoras muestra qué está imprimiendo, para qué cliente, cuántas piezas faltan y cuándo termina, y debajo su propia cola con lo que sigue y la fecha estimada de cada trabajo. Lo que no alcanza la fecha se marca en rojo con anticipación, cuando todavía hay tiempo de mover piezas entre impresoras.</p></div>
-        <div class="bloque neon"><span class="n">03</span><h3>Fechas de entrega y de envío a la vista</h3><p>Cada pieza conoce su fecha límite. Si el pedido es fuera de la ciudad, el sistema trabaja con la fecha en que debe salir el envío, no con la de entrega. Nadie tiene que preguntar para cuándo es.</p></div>
-        <div class="bloque neon"><span class="n">04</span><h3>Ficha técnica y cotización en un clic</h3><p>Las dos hojas que hoy se arman a mano salen del mismo pedido, con el formato de THINGS, listas para imprimir o enviar en PDF. Número de pedido, IVA y totales se calculan solos.</p></div>
-        <div class="bloque"><span class="n">05</span><h3>Convive con Notion y Leadsales</h3><p>Los clientes siguen llegando por Leadsales y la información que ya existe en Notion se carga en el sistema. Nada se captura dos veces y nadie tiene que cambiar su forma de trabajar de un día para otro.</p></div>
-        <div class="bloque"><span class="n">06</span><h3>Acceso por persona, desde cualquier dispositivo</h3><p>La dirección ve todo. El taller entra únicamente a su tablero, desde la tablet o el celular. Cada cambio queda registrado con quién lo hizo y a qué hora.</p></div>
+        <div class="bloque neon"><span class="n">02</span><h3>Una pantalla por departamento</h3><p>Producción ve su lista de trabajo: cada pieza con su foto, la fecha solicitada en el pedido, el estatus que ellas mismas actualizan y una nota para dejar avisos. Impresión ve las seis Bambu Lab, qué imprime cada una y su cola. Cada área entra a lo suyo y nadie se pierde entre pantallas que no le tocan.</p></div>
+        <div class="bloque neon"><span class="n">03</span><h3>Las seis impresoras, al día</h3><p>Cada impresora muestra qué está imprimiendo, para qué cliente, cuántas piezas faltan y cuándo termina, con su propia cola y la fecha estimada de cada trabajo. Lo que no alcanza se marca en rojo con anticipación, cuando todavía hay tiempo de mover piezas entre impresoras.</p></div>
+        <div class="bloque neon"><span class="n">04</span><h3>Fechas de entrega y de envío a la vista</h3><p>Cada pieza conoce su fecha límite. Si el pedido es fuera de la ciudad, el sistema trabaja con la fecha en que debe salir el envío, no con la de entrega. Nadie tiene que preguntar para cuándo es.</p></div>
+        <div class="bloque neon"><span class="n">05</span><h3>Ficha técnica y cotización en un clic</h3><p>Las dos hojas que hoy se arman a mano salen del mismo pedido, con el formato de THINGS, listas para imprimir o enviar en PDF. Número de pedido, IVA y totales se calculan solos.</p></div>
+        <div class="bloque"><span class="n">06</span><h3>Convive con Notion y Leadsales</h3><p>Los clientes siguen llegando por Leadsales y la información que ya existe en Notion se carga en el sistema. Nada se captura dos veces y nadie tiene que cambiar su forma de trabajar de un día para otro.</p></div>
+        <div class="bloque"><span class="n">07</span><h3>Acceso por persona, desde cualquier dispositivo</h3><p>La dirección ve todo. Producción entra a su lista y al tablero de impresoras, desde la tablet o el celular. Cada cambio queda registrado con quién lo hizo y a qué hora.</p></div>
       </div>
     </div>
 
@@ -616,10 +656,7 @@ const activa=n=>deImpresora(n).find(x=>x.z.estado==='produccion')||null;
 /* ---------- estado y almacenamiento ---------- */
 const KEY='things-taller-v1';
 let pedidos,mant=[5],sel=null,filtroT='pendientes',busca='',hoja=null,form=null;
-/* pantalla del tablero: todo, solo impresoras (para la pantalla del taller) o solo taller. Se guarda y va en el link (#impresoras / #taller) */
-let pantalla='todo';
-try{pantalla=localStorage.getItem('things-pantalla')||'todo';}catch(e){}
-if(['#impresoras','#taller','#todo'].includes(location.hash))pantalla=location.hash.slice(1);
+/* cada pieza guarda una nota del taller */
 function cargar(){
   try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.dia===iso(hoy)&&Array.isArray(s.pedidos)&&s.pedidos.length){pedidos=s.pedidos;mant=Array.isArray(s.mant)?s.mant:[];return;}}catch(e){}
   pedidos=generarBase();mant=[5];guardar();
@@ -632,28 +669,98 @@ const buscarPieza=id=>{for(const p of pedidos){const z=p.piezas.find(x=>x.id===i
 let toastT;
 function toast(msg,ico){const t=$('toast');t.innerHTML=(ico?ICO[ico]:ICO.check)+'<span>'+esc(msg)+'</span>';t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true;},3000);}
 
-/* ---------- tablero del taller ---------- */
-function renderCifras(){
-  const atr=piezasCon((p,z)=>pendiente(z)&&estadoPieza(p,z).mal).length;
-  const sem=piezasCon((p,z)=>pendiente(z)&&!estadoPieza(p,z).mal&&dias(limite(p),hoy)<=7).length;
-  const ocupadas=IMPRESORAS.filter(i=>activa(i.n)).length;
-  const listos=piezasCon((p,z)=>z.estado==='listo').length;
-  $('cifras').innerHTML=
-    '<button class="cifra rojo'+(filtroT==='atrasados'?' on':'')+'" data-ft="atrasados"><span class="v num">'+atr+'</span><span class="k">Atrasadas</span></button>'+
-    '<button class="cifra neon'+(filtroT==='semana'?' on':'')+'" data-ft="semana"><span class="v num">'+sem+'</span><span class="k">Salen esta semana</span></button>'+
-    '<button class="cifra'+(filtroT==='produccion'?' on':'')+'" data-ft="produccion"><span class="v num">'+ocupadas+'<span style="font-size:18px;color:var(--ink2)"> de '+N_IMPRESORAS+'</span></span><span class="k">Impresoras trabajando</span></button>'+
-    '<button class="cifra negro'+(filtroT==='listos'?' on':'')+'" data-ft="listos"><span class="v num">'+listos+'</span><span class="k">Listas para entregar</span></button>';
-}
-const FT={
-  pendientes:(p,z)=>pendiente(z),
-  atrasados:(p,z)=>pendiente(z)&&estadoPieza(p,z).mal,
-  semana:(p,z)=>pendiente(z)&&dias(limite(p),hoy)<=7,
+/* ---------- departamentos: producción e impresoras ---------- */
+/* el estatus en el idioma del taller; es el mismo dato que ven las impresoras */
+const PROD={
+  por_iniciar:{txt:'Sin empezar'},
+  produccion:{txt:'En proceso'},
+  listo:{txt:'Terminado'},
+  entregado:{txt:'Entregado'}
+};
+const FPROD={
+  pendientes:(p,z)=>z.estado!=='entregado',
+  atrasadas:(p,z)=>z.estado!=='entregado'&&estadoPieza(p,z).mal,
+  por_iniciar:(p,z)=>z.estado==='por_iniciar',
   produccion:(p,z)=>z.estado==='produccion',
-  listos:(p,z)=>z.estado==='listo',
-  entregadas:(p,z)=>z.estado==='entregado',
+  listo:(p,z)=>z.estado==='listo',
+  entregado:(p,z)=>z.estado==='entregado',
   todas:()=>true
 };
+const TIT={pendientes:'Pendientes',atrasadas:'Atrasadas',por_iniciar:'Sin empezar',produccion:'En proceso',listo:'Terminadas',entregado:'Entregadas',todas:'Todas las piezas'};
 const fotoMini=z=>z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':ICO.cara;
+
+/* ---------- producción: la lista de trabajo del taller ---------- */
+function renderCifrasProd(){
+  const n=k=>piezasCon(FPROD[k]).length;
+  $('cifrasProd').innerHTML=
+    '<button class="cifra rojo'+(filtroT==='atrasadas'?' on':'')+'" data-ft="atrasadas"><span class="v num">'+n('atrasadas')+'</span><span class="k">Atrasadas</span></button>'+
+    '<button class="cifra'+(filtroT==='por_iniciar'?' on':'')+'" data-ft="por_iniciar"><span class="v num">'+n('por_iniciar')+'</span><span class="k">Sin empezar</span></button>'+
+    '<button class="cifra neon'+(filtroT==='produccion'?' on':'')+'" data-ft="produccion"><span class="v num">'+n('produccion')+'</span><span class="k">En proceso</span></button>'+
+    '<button class="cifra negro'+(filtroT==='listo'?' on':'')+'" data-ft="listo"><span class="v num">'+n('listo')+'</span><span class="k">Terminadas</span></button>';
+}
+function renderProduccion(){
+  renderCifrasProd();
+  $('prodTitulo').textContent=TIT[filtroT]||'Pendientes';
+  const n=k=>piezasCon(FPROD[k]).length;
+  $('filtrosProd').innerHTML=[['pendientes','Pendientes'],['por_iniciar','Sin empezar'],['produccion','En proceso'],['listo','Terminadas'],['entregado','Entregadas'],['todas','Todas']].map(f=>'<button class="fchip'+(filtroT===f[0]?' on':'')+'" data-ft="'+f[0]+'">'+f[1]+' <span class="cnt">'+n(f[0])+'</span></button>').join('');
+  let items=piezasCon(FPROD[filtroT]||FPROD.pendientes);
+  items.sort((a,b)=>{const ra=a.z.estado==='entregado'?1:0,rb=b.z.estado==='entregado'?1:0;if(ra!==rb)return ra-rb;const la=limite(a.p),lb=limite(b.p);return ra?lb-la:la-lb;});
+  $('prodResumen').textContent=plural(items.length,'pieza','piezas')+' · '+items.reduce((s,x)=>s+x.z.cantidad,0).toLocaleString('es-MX')+' unidades';
+  $('listaProd').innerHTML=items.length?items.map(({p,z})=>{
+    const e=estadoPieza(p,z);const ent=deIso(p.entrega);const lim=limite(p);
+    const mal=e.mal&&z.estado!=='entregado';
+    const sub=p.fuera&&p.envio
+      ? 'Sale el envío '+fDia(deIso(p.envio))+' a '+esc(p.ciudad)+' · '+relativo(deIso(p.envio))
+      : (z.estado==='entregado'?'Entregado':'Debe estar lista '+relativo(lim));
+    const marcas=[];
+    if(z.impresora)marcas.push('<span class="tag">Impresora '+z.impresora+'</span>');
+    if(z.horas)marcas.push('<span class="tag neon">'+z.horas+' h/pieza</span>');
+    if(z.estado!=='entregado'&&(z.hechas||0)>0&&z.hechas<z.cantidad)marcas.push('<span class="tag" style="background:var(--gris);color:var(--ink)">'+z.hechas+' de '+z.cantidad+' hechas</span>');
+    return '<article class="trabajo'+(mal?' atrasada':'')+'">'+
+      '<div class="th">'+fotoMini(z)+'</div>'+
+      '<div class="qué"><b>'+z.cantidad.toLocaleString('es-MX')+' × '+esc(z.concepto)+'</b>'+
+        '<span class="cli">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' · '+esc(p.no)+'</span>'+
+        (z.descripcion?'<span class="cli">'+esc(z.descripcion)+'</span>':'')+
+        (marcas.length?'<div class="marcas">'+marcas.join('')+'</div>':'')+
+        '<input class="nota" data-nota="'+z.id+'" value="'+esc(z.nota||'')+'" placeholder="Nota del taller: material, falla, quién lo trabaja…" aria-label="Nota del taller">'+
+      '</div>'+
+      '<div class="cuando"><span class="k">Fecha solicitada</span><span class="f'+(mal?'" style="color:var(--rojo)':'')+'">'+fDia(ent)+'</span><span class="sub'+(mal?' mal':'')+'">'+esc(sub)+'</span></div>'+
+      '<div class="acciones-p">'+
+        '<select class="est-sel '+z.estado+'" data-estado="'+z.id+'" aria-label="Estatus">'+Object.keys(PROD).map(k=>'<option value="'+k+'"'+(z.estado===k?' selected':'')+'>'+PROD[k].txt+'</option>').join('')+'</select>'+
+        '<div class="fila-b"><button class="btn small" data-act="ficha" data-z="'+z.id+'">Ficha</button>'+(z.estado==='por_iniciar'||z.estado==='produccion'?'<button class="btn small ghost" data-act="ver-pedido" data-no="'+esc(p.no)+'">Pedido</button>':'')+'</div>'+
+      '</div></article>';
+  }).join(''):'<p class="muted" style="padding:10px 0">No hay piezas con ese filtro.</p>';
+}
+/* cambiar el estatus desde producción; mantiene coherentes las impresoras */
+function setEstado(zid,nuevo){
+  const r=buscarPieza(zid);if(!r||!PROD[nuevo])return;
+  const z=r.z,n=z.impresora;
+  if(z.estado===nuevo)return;
+  if(nuevo==='produccion'&&n&&!mant.includes(n)){const ah=activa(n);if(ah&&ah.z.id!==z.id)ah.z.estado='por_iniciar';}
+  z.estado=nuevo;
+  let msg=z.concepto+': '+PROD[nuevo].txt.toLowerCase()+'.';
+  if(nuevo==='listo'||nuevo==='entregado'){
+    z.hechas=z.cantidad;
+    if(n){z.impresora=null;const sig=deImpresora(n)[0];
+      if(sig&&!mant.includes(n)){sig.z.estado='produccion';msg+=' La impresora '+n+' sigue con '+sig.z.concepto+'.';}
+      else msg+=' La impresora '+n+' queda libre.';}
+  }
+  if(nuevo==='por_iniciar')z.hechas=0;
+  guardar();renderTodo();toast(msg,'check');
+}
+
+/* ---------- impresoras: lo que tiene que procesar cada Bambu Lab ---------- */
+function renderCifrasImp(){
+  const trabajando=IMPRESORAS.filter(i=>activa(i.n)).length;
+  const enCola=piezasCon((p,z)=>z.impresora&&z.estado==='por_iniciar').length;
+  const libres=IMPRESORAS.filter(i=>!activa(i.n)&&!mant.includes(i.n)).length;
+  const noAlcanzan=piezasCon((p,z)=>z.impresora&&z.estado==='produccion'&&estadoPieza(p,z).mal).length;
+  $('cifrasImp').innerHTML=
+    '<div class="cifra neon"><span class="v num">'+trabajando+'<span style="font-size:18px;color:var(--ink2)"> de '+N_IMPRESORAS+'</span></span><span class="k">Imprimiendo</span></div>'+
+    '<div class="cifra"><span class="v num">'+enCola+'</span><span class="k">Piezas en cola</span></div>'+
+    '<div class="cifra negro"><span class="v num">'+libres+'</span><span class="k">Impresoras libres</span></div>'+
+    '<div class="cifra'+(noAlcanzan?' rojo':'')+'"><span class="v num">'+noAlcanzan+'</span><span class="k">No alcanzan la fecha</span></div>';
+}
 function renderImpresoras(){
   let ocupadas=0,mantN=0;
   $('impresoras').innerHTML=IMPRESORAS.map(i=>{
@@ -692,38 +799,10 @@ function renderImpresoras(){
   }).join('');
   $('impResumen').textContent=ocupadas+' imprimiendo · '+(N_IMPRESORAS-ocupadas-mantN)+' libres'+(mantN?' · '+mantN+' en mantenimiento':'');
 }
-function renderTarjetas(){
-  $('tallerTitulo').textContent={pendientes:'Pendientes',atrasados:'Atrasadas',semana:'Salen esta semana',produccion:'Imprimiendo',listos:'Listas para entregar',entregadas:'Entregadas',todas:'Todas las piezas'}[filtroT];
-  const n=k=>piezasCon(FT[k]).length;
-  $('filtrosTaller').innerHTML=[['pendientes','Pendientes'],['produccion','Imprimiendo'],['listos','Listas'],['entregadas','Entregadas'],['todas','Todas']].map(f=>'<button class="fchip'+(filtroT===f[0]?' on':'')+'" data-ft="'+f[0]+'">'+f[1]+' <span class="cnt">'+n(f[0])+'</span></button>').join('');
-  let items=piezasCon(FT[filtroT]);
-  items.sort((a,b)=>{const ra=pendiente(a.z)?0:1,rb=pendiente(b.z)?0:1;if(ra!==rb)return ra-rb;const la=limite(a.p),lb=limite(b.p);return ra?lb-la:la-lb;});
-  $('tallerResumen').textContent=plural(items.length,'pieza','piezas')+' · '+items.reduce((s,x)=>s+x.z.cantidad,0).toLocaleString('es-MX')+' unidades';
-  $('tarjetas').innerHTML=items.length?items.map(({p,z})=>{
-    const e=estadoPieza(p,z);const ent=deIso(p.entrega);const lim=limite(p);
-    let fechas='';
-    if(p.fuera&&p.envio){fechas='<span><span class="hl'+(e.mal?' rojo':'')+'">SALE: '+fDia(deIso(p.envio)).toUpperCase()+'</span></span><span class="cuando'+(e.mal?' mal':'')+'">envío a '+esc(p.ciudad)+' · entrega '+fDia(ent)+' · '+(z.estado==='entregado'?'entregado':relativo(lim))+'</span>';}
-    else{fechas='<span><span class="hl'+(e.mal?' rojo':'')+'">ENTREGA: '+fDia(ent).toUpperCase()+'</span></span><span class="cuando'+(e.mal?' mal':'')+'">'+(z.estado==='entregado'?'entregado':relativo(ent))+'</span>';}
-    let acts='';
-    if(z.estado==='por_iniciar'&&!z.impresora)acts+='<select class="cola-sel" data-cola-pieza="'+z.id+'"><option value="">Mandar a…</option>'+IMPRESORAS.map(x=>{const m=mant.includes(x.n);const a=activa(x.n);return '<option value="'+x.n+'"'+(m?' disabled':'')+'>'+esc(x.nombre)+(m?' · mantenimiento':a?' · ocupada':' · libre')+'</option>';}).join('')+'</select>';
-    if(z.estado==='produccion')acts+='<button class="btn small negro" data-act="lote" data-z="'+z.id+'">Lote terminado</button>';
-    if(z.estado==='listo')acts+='<button class="btn small negro" data-act="estado" data-z="'+z.id+'" data-e="entregado">Entregado</button>';
-    if(z.estado==='entregado')acts+='<button class="btn small ghost" data-act="estado" data-z="'+z.id+'" data-e="listo">Regresar a listo</button>';
-    acts+='<button class="btn small" data-act="ficha" data-z="'+z.id+'">Ficha</button>';
-    const avance=z.estado==='produccion'||z.estado==='por_iniciar'?'<p class="tiny muted">'+(z.hechas||0)+' de '+z.cantidad+' hechas'+(z.horas?' · faltan '+horasRestantes(z).toLocaleString('es-MX')+' h':'')+'</p>':'';
-    return '<article class="tarjeta'+(e.mal?' atrasada':'')+'"><div class="foto">'+(z.imagen?'<img src="'+esc(z.imagen)+'" alt="">':'<div class="ph">'+ICO.cara+'<span>Foto pendiente</span></div>')+(z.impresora?'<span class="tag taller">Impresora '+z.impresora+'</span>':'')+'<span class="qty">× '+z.cantidad.toLocaleString('es-MX')+'</span></div>'+
-      '<div class="cuerpo"><div><span class="estado '+e.cls+'">'+esc(e.txt)+'</span></div><h3>'+esc(z.concepto)+'</h3>'+(z.descripcion?'<p class="desc">'+esc(z.descripcion)+'</p>':'')+avance+'<div class="cli">'+esc(p.empresa)+(p.ciudad!=='León'?' · '+esc(p.ciudad):'')+' <span class="muted tiny">· '+esc(p.no)+'</span></div><div class="fechas">'+fechas+'</div><div class="acts">'+acts+'</div></div></article>';
-  }).join(''):'<p class="muted" style="padding:10px 0">No hay piezas con ese filtro.</p>';
-}
-function renderPantalla(){
-  document.querySelectorAll('#pantallas [data-pantalla]').forEach(b=>b.classList.toggle('on',b.dataset.pantalla===pantalla));
-  $('secImpresoras').hidden=pantalla==='taller';
-  $('secPiezas').hidden=pantalla==='impresoras';
-  $('view-taller').classList.toggle('pantalla-impresoras',pantalla==='impresoras');
-  $('pantallaNota').textContent=pantalla==='impresoras'?'Pantalla del taller. El enlace con #impresoras abre directamente aquí.':pantalla==='taller'?'Solo las piezas, sin las impresoras.':'';
-}
-function renderTaller(){renderPantalla();renderCifras();renderImpresoras();renderTarjetas();}
+
+function renderTaller(){renderProduccion();renderCifrasImp();renderImpresoras();}
 /* acciones del taller */
+
 function asignar(zid,n){
   const r=buscarPieza(zid);if(!r)return;n=parseInt(n,10);if(!(n>0))return;
   if(mant.includes(n)){toast('La impresora '+n+' está en mantenimiento','alert');return;}
@@ -732,13 +811,7 @@ function asignar(zid,n){
   else{r.z.estado='por_iniciar';toast(r.z.concepto+': en cola de la impresora '+n);}
   guardar();renderTodo();
 }
-function lote(zid){
-  const r=buscarPieza(zid);if(!r)return;const n=r.z.impresora;
-  r.z.estado='listo';r.z.hechas=r.z.cantidad;r.z.impresora=null;
-  let msg=r.z.concepto+': listo para entregar.';
-  if(n&&!mant.includes(n)){const sig=deImpresora(n)[0];if(sig){sig.z.estado='produccion';msg+=' La impresora '+n+' sigue con '+sig.z.concepto+'.';}else msg+=' La impresora '+n+' queda libre.';}
-  guardar();renderTodo();toast(msg,'check');
-}
+const lote=zid=>setEstado(zid,'listo');
 
 /* ---------- pedidos (vista de Marce) ---------- */
 function renderPedidos(){
@@ -928,20 +1001,20 @@ function renderCot(no){
 }
 
 /* ---------- navegación ---------- */
-let vistaAnterior='taller';
+let vistaAnterior='produccion';
 function mostrar(v){
   const actual=[...document.querySelectorAll('.view')].find(s=>!s.hidden);
   if(actual&&!['view-ficha','view-cotizacion'].includes(actual.id))vistaAnterior=actual.id.replace('view-','');
   document.querySelectorAll('.view').forEach(s=>{s.hidden=s.id!=='view-'+v;});
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  if(['produccion','impresoras','pedidos','propuesta'].includes(v))history.replaceState(null,'','#'+v);
   window.scrollTo({top:0});
 }
 function renderTodo(){renderTaller();renderPedidos();renderPanel();}
 $('tabs').addEventListener('click',e=>{const t=e.target.closest('.tab');if(t){form=null;mostrar(t.dataset.view);renderPanel();}});
 document.querySelector('main').addEventListener('click',e=>{
-  const b=e.target.closest('[data-act],[data-ft],[data-pantalla]');if(!b)return;
-  if(b.dataset.pantalla){pantalla=b.dataset.pantalla;try{localStorage.setItem('things-pantalla',pantalla);}catch(x){}history.replaceState(null,'','#'+pantalla);renderTaller();return;}
-  if(b.dataset.ft){filtroT=b.dataset.ft;renderTaller();return;}
+  const b=e.target.closest('[data-act],[data-ft]');if(!b)return;
+  if(b.dataset.ft){filtroT=b.dataset.ft;renderProduccion();return;}
   const act=b.dataset.act;
   if(act==='lote'){lote(b.dataset.z);return;}
   if(act==='empezar'){const r=buscarPieza(b.dataset.z);if(r){r.z.estado='produccion';guardar();renderTodo();toast(r.z.concepto+': imprimiendo en la impresora '+r.z.impresora);}return;}
@@ -952,6 +1025,7 @@ document.querySelector('main').addEventListener('click',e=>{
   if(act==='ficha'){hoja={tipo:'ficha',id:b.dataset.z};renderFicha(b.dataset.z);mostrar('ficha');return;}
   if(act==='cotizacion'){hoja={tipo:'cot',id:b.dataset.no};renderCot(b.dataset.no);mostrar('cotizacion');return;}
   if(act==='volver'){mostrar(vistaAnterior);return;}
+  if(act==='ver-pedido'){sel=b.dataset.no;form=null;mostrar('pedidos');renderPedidos();renderPanel();return;}
   if(act==='imprimir'){window.print();return;}
   if(act==='abrir'){sel=b.dataset.no;form=null;renderPedidos();renderPanel();return;}
   if(act==='cerrar'){sel=null;form=null;renderPedidos();renderPanel();return;}
@@ -966,7 +1040,9 @@ $('buscaPed').addEventListener('input',e=>{busca=e.target.value;renderPedidos();
 document.querySelector('main').addEventListener('change',e=>{
   const sel=e.target.closest('[data-cola-imp]');if(sel&&sel.value){asignar(sel.value,sel.dataset.colaImp);return;}
   const sp=e.target.closest('[data-cola-pieza]');if(sp&&sp.value){asignar(sp.dataset.colaPieza,sp.value);return;}
-  const h=e.target.closest('[data-hechas]');if(h){const r=buscarPieza(h.dataset.hechas);if(r){r.z.hechas=Math.max(0,Math.min(r.z.cantidad,parseInt(h.value,10)||0));guardar();renderTodo();}}
+  const h=e.target.closest('[data-hechas]');if(h){const r=buscarPieza(h.dataset.hechas);if(r){r.z.hechas=Math.max(0,Math.min(r.z.cantidad,parseInt(h.value,10)||0));guardar();renderTodo();}return;}
+  const es=e.target.closest('[data-estado]');if(es){setEstado(es.dataset.estado,es.value);return;}
+  const nt=e.target.closest('[data-nota]');if(nt){const r=buscarPieza(nt.dataset.nota);if(r){r.z.nota=nt.value.trim();guardar();toast(r.z.nota?'Nota guardada':'Nota borrada');}return;}
 });
 $('btnReset').addEventListener('click',()=>{try{localStorage.removeItem(KEY);}catch(e){}sel=null;form=null;filtroT='pendientes';busca='';mant=[5];$('buscaPed').value='';pedidos=generarBase();guardar();renderTodo();toast('Demo reiniciada');});
 
@@ -975,7 +1051,10 @@ $('hoyChip').textContent='DATE: '+fPunto(hoy);
 cargar();
 renderTodo();
 /* el enlace puede abrir directo en una pestaña: #propuesta o #pedidos */
-if(location.hash==='#propuesta'||location.hash==='#pedidos')mostrar(location.hash.slice(1));
+const VISTAS=['produccion','impresoras','pedidos','propuesta'];
+const porHash=()=>{const v=location.hash.slice(1);if(VISTAS.includes(v)){form=null;mostrar(v);renderPanel();}};
+porHash();
+window.addEventListener('hashchange',porHash);
 })();
 </script>
 </body>

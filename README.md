@@ -22,13 +22,18 @@ piezas que más repiten; regla de numeración y cobro (anticipo); fotos de los p
 - `index.html` — la plataforma en un solo archivo con la identidad de THINGS (negro, verde
   neón `#D5FF34`, rojo `#FF0202`, bandas «>>><<<», caritas, estrellas; tipografías Archivo
   semicondensada e Inter Tight, las mismas familias de sus documentos). Lleva `noindex`.
-  - **Las seis impresoras** (funciona): una tarjeta por Bambu Lab con lo que imprime ahora
+  - **Impresoras** (funciona): una tarjeta por Bambu Lab con lo que imprime ahora
     (pieza, cliente, hechas de cuántas, horas que faltan, cuándo termina y si alcanza la fecha
     de entrega o de envío), lo que sigue en su cola, y botones de «lote terminado», «quitar» y
     «mantenimiento». Lo que no alcanza se pinta de rojo. Contadores de atrasadas, esta semana,
     impresoras trabajando y listas.
-  - **Filtro de pantalla** (funciona): «Todo», «Solo impresoras» (para la pantalla o tablet del
-    taller; el link con `#impresoras` abre directo ahí y se recuerda) y «Solo taller».
+  - **Pestañas por departamento** (funciona): Producción, Impresoras, Pedidos y Propuesta.
+    Cada una abre con su enlace: `#produccion`, `#impresoras`, `#pedidos`, `#propuesta`.
+  - **Producción** (funciona): lista de trabajo del taller. Cada pieza con foto, cliente,
+    número de pedido, la **fecha solicitada** que se capturó en Pedidos, cuándo debe estar lista
+    (o cuándo sale el envío), el **estatus que el taller actualiza** (sin empezar, en proceso,
+    terminado, entregado) y una **nota** libre. Contadores de atrasadas, sin empezar, en proceso
+    y terminadas, que filtran la lista. Botón para ver la ficha o saltar al pedido.
   - **Cola de piezas** (funciona): lo pendiente sin impresora, en orden de fecha límite, con un
     selector para mandarlo a la impresora que esté libre (o a la cola de una ocupada).
   - **Todas las piezas** (funciona): tarjetas con foto, estado, hechas/faltan, fechas; filtros
